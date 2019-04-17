@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { _createPost } from "../services/feedService";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -64,7 +63,6 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      postContent: "",
       location: "",
       locationChoices: [
         { label: "", value: "" },
@@ -86,8 +84,7 @@ class Post extends Component {
         { label: "$3000-$5000/tháng", value: "$3000-$5000/tháng" },
         { label: "$5000-$7000/tháng", value: "$5000-$7000/tháng" }
       ],
-      phoneNumber: "(  )    -    ",
-      fullName: ""
+      phoneNumber: "(  )    -    "
     };
   }
 
@@ -110,21 +107,6 @@ class Post extends Component {
   handlePhoneNumberChange = phoneNumber => event => {
     this.setState({ [phoneNumber]: event.target.value });
   };
-
-  handleFullNameChange = fullName => event => {
-    this.setState({ [fullName]: event.target.value });
-  };
-
-  createPost = (event) => {
-    event.preventDefault();
-
-    const {postContent, salary, experience, job_location, fullName, phoneNumber} = this.state;
-    const job_id = this.props.jobID;
-
-    return _createPost(postContent, salary, experience, job_location, fullName, phoneNumber, job_id).then(resJson => {
-        console.log(resJson);
-      })
-  }
 
   render() {
     const { classes } = this.props;
@@ -175,8 +157,6 @@ class Post extends Component {
 
           <TextField
             id="fullname"
-            value={this.state.fullName}
-            onChange={this.handleFullNameChange("fullName")}
             required
             label="Họ và Tên"
             margin="dense"

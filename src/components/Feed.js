@@ -1,11 +1,10 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import Post from "./Post";
-import { _loadPosts } from "../services/feedService";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
 import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
@@ -17,6 +16,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
+
 
 const styles = {
   root: {
@@ -48,55 +48,35 @@ const styles = {
 };
 
 class Feed extends Component {
-  constructor(props) {
+
+  constructor(props){
     super(props);
     this.state = {
-      posts: [],
       job_avatars: [
         {
           img: "/assets/images/nail_avatar.jpeg",
-          label: "Làm Nail",
-          job_id: 1
+          label: "Làm Nail"
         },
         {
           img: "/assets/images/hau_ban.jpeg",
-          label: "Hầu Bàn",
-          job_id: 2
+          label: "Hầu Bàn"
         },
         {
           img: "/assets/images/cooking.jpeg",
-          label: "Phụ Bếp",
-          job_id: 3
+          label: "Phụ Bếp"
         }
       ],
-      open: false,
-      job_id: null
+      open: false
     };
   }
 
-  componentDidMount() {
-    return _loadPosts().then(resultingJSON =>
-      this.setState({ posts: resultingJSON })
-    );
-  }
-
-  handleClickOpen = (event) => {
-    const job_id = event.target.getAttribute("data-jobid");
-    this.setState({ open: true, job_id });
+  handleClickOpen = () => {
+    this.setState({ open: true });
   };
 
   handleClose = () => {
     this.setState({ open: false });
   };
-
-  handlePhoneNumberFormat = (phoneNumber) => {
-    return `tel: ${phoneNumber}`
-  }
-
-  handleDateFormat = (date) => {
-    const formattedDate = date.substring(0, 10);
-    return formattedDate
-  }
 
   render() {
     const { classes } = this.props;
@@ -126,12 +106,7 @@ class Feed extends Component {
                   src={job.img}
                   className={classes.paper_icon}
                 />
-                <Button
-                  onClick={this.handleClickOpen}
-                  color="secondary"
-                  variant="outlined"
-                  data-jobid={job.job_id}
-                >
+                <Button onClick={this.handleClickOpen} color="secondary" variant="outlined">
                   {job.label}
                 </Button>
               </Grid>
@@ -141,45 +116,7 @@ class Feed extends Component {
 
         <Divider />
 
-        {this.state.posts.map(post => {
-          return (
-          <Card className={classes.Card}>
-            <CardHeader
-              avatar={
-                <Avatar
-                  aria-label={post.job_name}
-                  alt={post.job_name}
-                  src={post.job_avatar}
-                />
-              }
-              action={
-                <IconButton>
-                  <a href={this.handlePhoneNumberFormat()}>
-                    <Icon>call</Icon>
-                  </a>
-                </IconButton>
-              }
-              title={post.username}
-              subheader={this.handleDateFormat(post.post_date)}
-            />
-            <CardContent>
-              <Typography component="p">
-                {post.post_content}
-              </Typography>
-            </CardContent>
-            <CardActions className={classes.tags}>
-              <Chip className={classes.chips} label={"Khu Vực Gần: " + post.job_location} />
-              <Chip className={classes.chips} label={"Kinh Nghiệm: " + post.experience} />
-              <Chip
-                className={classes.chips}
-                label={"Lương Bổng: " + post.salary}
-              />
-            </CardActions>
-          </Card>
-          )
-      })}
-
-        {/* <Card className={classes.Card}>
+        <Card className={classes.Card}>
           <CardHeader
             avatar={
               <Avatar
@@ -285,21 +222,19 @@ class Feed extends Component {
               label="Lương Bổng: $800-1000/tháng"
             />
           </CardActions>
-        </Card> */}
+        </Card>
 
         <Post
           PostOpen={this.state.open}
           PostOpenHandling={this.handleClickOpen}
-          PostCloseHandling={this.handleClose}
-          jobID={...this.state.job_id}
-        />
+          PostCloseHandling={this.handleClose}/>
       </div>
     );
   }
 }
 
 Feed.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Feed);
