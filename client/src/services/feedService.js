@@ -3,13 +3,14 @@ export const _loadPosts = () => {
     .then(res => res.json())
 }
 
-export const _createPost = (username, job_id, phone_number, post_content, job_location, experience, salary, post_date) => {
+export const _createPost = (fullName, job_id, phone_number, post_content, job_location, experience, salary) => {
+  debugger
 	return fetch("http://localhost:3001/api/post/create", {
 	    method: 'POST',
 	    headers: {
 	      'Accept': 'application/json',
 	      'Content-Type': 'application/json'
 	    },
-	    body: JSON.stringify({username, job_id, phone_number, post_content, job_location, experience, salary, post_date})
+	    body: JSON.stringify({fullName, job_id, phone_number, post_content, job_location, experience, salary})
 	  }).then(res => res.json())
 }

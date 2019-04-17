@@ -23,13 +23,22 @@ exports.feed_get = (req, res) => {
 
 exports.post_create = (req, res) => {
 
-  const {postContent, salary, experience, job_location, fullName, phoneNumber, job_id} = req.body;
+  console.log(req.body);
+  const {fullName, job_id, phone_number, post_content, job_location, experience, salary} = req.body;
 
-  let feed_query =
-    "SELECT * FROM posts LEFT JOIN jobs ON jobs.id = posts.job_id";
+  let create_post = "INSERT INTO posts SET ?";
+  let data = {
+    username: fullName,
+    job_id,
+    phone_number,
+    post_content,
+    job_location,
+    experience,
+    salary
+  }
 
   database
-    .query(feed_query)
+    .query(create_post, data)
     .then(results => {
       res.json(results);
     })

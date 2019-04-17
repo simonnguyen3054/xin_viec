@@ -81,7 +81,8 @@ class Feed extends Component {
   }
 
   handleClickOpen = (event) => {
-    const job_id = event.target.getAttribute("data-jobid");
+    const job_id = event.currentTarget.getAttribute("data-jobid");
+    debugger
     this.setState({ open: true, job_id });
   };
 
@@ -291,7 +292,7 @@ class Feed extends Component {
           PostOpen={this.state.open}
           PostOpenHandling={this.handleClickOpen}
           PostCloseHandling={this.handleClose}
-          jobID={...this.state.job_id}
+          jobID={this.state.job_id}
         />
       </div>
     );

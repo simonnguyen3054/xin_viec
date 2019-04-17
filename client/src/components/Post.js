@@ -117,13 +117,15 @@ class Post extends Component {
 
   createPost = (event) => {
     event.preventDefault();
-
-    const {postContent, salary, experience, job_location, fullName, phoneNumber} = this.state;
+    const {postContent, salary, experience, location, fullName, phoneNumber} = this.state;
     const job_id = this.props.jobID;
-
-    return _createPost(postContent, salary, experience, job_location, fullName, phoneNumber, job_id).then(resJson => {
+    debugger
+    _createPost(fullName, job_id, phoneNumber, postContent, location, experience, salary).then(resJson => {
         console.log(resJson);
       })
+
+    //close dilalog
+    this.props.PostCloseHandling();
   }
 
   render() {
@@ -148,7 +150,7 @@ class Post extends Component {
               <Typography variant="h6" color="inherit">
                 Đăng Tin
               </Typography>
-              <Button color="inherit" onClick={this.props.PostCloseHandling}>
+              <Button color="inherit" onClick={this.createPost}>
                 Share
               </Button>
             </Toolbar>
