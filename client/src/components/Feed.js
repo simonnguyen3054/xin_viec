@@ -89,7 +89,7 @@ class Feed extends Component {
   }
 
   handleDateFormat = (date) => {
-    const formattedDate = date.substring(0, 9);
+    const formattedDate = date.substring(0, 10);
     return formattedDate
   }
 
