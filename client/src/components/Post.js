@@ -119,7 +119,6 @@ class Post extends Component {
     event.preventDefault();
     const {postContent, salary, experience, location, fullName, phoneNumber} = this.state;
     const job_id = this.props.jobID;
-    debugger
     _createPost(fullName, job_id, phoneNumber, postContent, location, experience, salary).then(resJson => {
         console.log(resJson);
       })

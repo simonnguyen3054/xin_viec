@@ -80,9 +80,14 @@ class Feed extends Component {
     );
   }
 
+  componentDidUpdate() {
+    return _loadPosts().then(resultingJSON =>
+      this.setState({ posts: resultingJSON })
+    );
+  }
+
   handleClickOpen = (event) => {
     const job_id = event.currentTarget.getAttribute("data-jobid");
-    debugger
     this.setState({ open: true, job_id });
   };
 

@@ -4,7 +4,6 @@ export const _loadPosts = () => {
 }
 
 export const _createPost = (fullName, job_id, phone_number, post_content, job_location, experience, salary) => {
-  debugger
 	return fetch("http://localhost:3001/api/post/create", {
 	    method: 'POST',
 	    headers: {
