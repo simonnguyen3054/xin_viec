@@ -9,6 +9,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
+import SendIcon from "@material-ui/icons/Send";
 import Slide from "@material-ui/core/Slide";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
@@ -108,6 +109,14 @@ class Post extends Component {
 
     //close dilalog
     this.props.PostCloseHandling();
+    this.setState({
+      postContent: "",
+      location: "",
+      experience: "",
+      salary: "",
+      phoneNumber: "",
+      fullName: ""
+    })
   }
 
   handlePostValidation = (postContent, location, experience, salary, fullName, phoneNumber) => {
@@ -156,13 +165,13 @@ class Post extends Component {
                 Đăng Tin
               </Typography>
               {this.handlePostValidation(postContent, location, experience, salary, fullName, phoneNumber) ?
-                <Button color="inherit" onClick={this.createPost}>
-                  Share
-                </Button>
+                <IconButton color="inherit" onClick={this.createPost}>
+                  <SendIcon />
+                </IconButton>
                 :
-                <Button disabled color="inherit" onClick={this.createPost}>
-                  Share
-                </Button>
+                <IconButton disabled color="inherit" onClick={this.createPost}>
+                   <SendIcon />
+                </IconButton>
               }
             </Toolbar>
           </AppBar>
