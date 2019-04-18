@@ -43,23 +43,6 @@ const Transition = props => {
   return <Slide direction="up" {...props} />;
 };
 
-//formatting phone number
-const phoneNumberFormatHandling = (props) => {
-  const { inputRef, ...other } = props;
-  return (
-    <MaskedInput
-      {...other}
-      ref={ref => {
-        inputRef(ref ? ref.inputElement : null);
-      }}
-      mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-      placeholderChar={'\u2000'}
-      showMask
-    />
-  );
-}
-
-
 class Post extends Component {
   constructor(props) {
     super(props);
@@ -86,7 +69,7 @@ class Post extends Component {
         { label: "$3000-$5000/tháng", value: "$3000-$5000/tháng" },
         { label: "$5000-$7000/tháng", value: "$5000-$7000/tháng" }
       ],
-      phoneNumber: "(  )    -    ",
+      phoneNumber: "",
       fullName: ""
     };
   }
@@ -127,8 +110,31 @@ class Post extends Component {
     this.props.PostCloseHandling();
   }
 
+  handlePostValidation = (postContent, location, experience, salary, fullName, phoneNumber) => {
+
+    const validatePost = {
+      postContent,
+      location,
+      experience,
+      salary,
+      fullName,
+      phoneNumber
+    }
+    let isDataValid = false;
+
+    if (Object.keys(validatePost).every((k) => {
+      return validatePost[k] ? true : false
+    })) {
+      isDataValid = true;
+    }
+
+    return isDataValid;
+  }
+
   render() {
     const { classes } = this.props;
+    const { postContent, location, experience, salary, fullName, phoneNumber } = this.state;
+
     return (
       <div>
         <Dialog
@@ -149,9 +155,15 @@ class Post extends Component {
               <Typography variant="h6" color="inherit">
                 Đăng Tin
               </Typography>
-              <Button color="inherit" onClick={this.createPost}>
-                Share
-              </Button>
+              {this.handlePostValidation(postContent, location, experience, salary, fullName, phoneNumber) ?
+                <Button color="inherit" onClick={this.createPost}>
+                  Share
+                </Button>
+                :
+                <Button disabled color="inherit" onClick={this.createPost}>
+                  Share
+                </Button>
+              }
             </Toolbar>
           </AppBar>
 
@@ -178,23 +190,18 @@ class Post extends Component {
             id="fullname"
             value={this.state.fullName}
             onChange={this.handleFullNameChange("fullName")}
-            required
             label="Họ và Tên"
             margin="dense"
             className={classes.selectInput}
           />
-          <FormControl className={classes.selectInput}>
-            <InputLabel htmlFor="formatted-phone-number">
-              Số Phone
-            </InputLabel>
-            <Input
-              required
-              value={this.state.phoneNumber}
-              onChange={this.handlePhoneNumberChange("phoneNumber")}
-              id="formatted-phone-number"
-              inputComponent={phoneNumberFormatHandling}
-            />
-          </FormControl>
+          <TextField
+            label="Số Phone"
+            value={this.state.phoneNumber}
+            onChange={this.handlePhoneNumberChange("phoneNumber")}
+            id="formatted-phone-number"
+            margin="dense"
+            className={classes.selectInput}
+          />
           <FormControl className={classes.selectInput}>
             <InputLabel htmlFor="post-location">Khu Vực Gần</InputLabel>
             <NativeSelect
