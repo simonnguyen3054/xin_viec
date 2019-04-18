@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 exports.feed_get = (req, res) => {
 
   let feed_query =
-    "SELECT * FROM posts LEFT JOIN jobs ON jobs.id = posts.job_id";
+    "SELECT * FROM posts LEFT JOIN jobs ON jobs.id = posts.job_id ORDER BY post_date DESC";
 
   database
     .query(feed_query)
