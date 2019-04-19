@@ -17,11 +17,6 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
-import Paper from '@material-ui/core/Paper';
-
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
 
 const styles = {
   root: {
@@ -106,10 +101,6 @@ class Feed extends Component {
     this.setState({ open: false });
   };
 
-  handlePhoneNumberFormat = phoneNumber => {
-    return `tel: ${phoneNumber}`;
-  };
-
   handleDateFormat = date => {
     const formattedDate = date.substring(0, 10);
     return formattedDate;
@@ -175,7 +166,7 @@ class Feed extends Component {
                 }
                 action={
                   <IconButton>
-                    <a href={this.handlePhoneNumberFormat()}>
+                    <a href={"tel: " + post.phone_number}>
                       <Icon>call</Icon>
                     </a>
                   </IconButton>
