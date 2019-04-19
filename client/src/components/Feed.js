@@ -17,11 +17,22 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
+import Paper from '@material-ui/core/Paper';
+
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import PersonPinIcon from '@material-ui/icons/PersonPin';
 
 const styles = {
   root: {
     flexGrow: 1
   },
+
+  header: {
+    margin: 20,
+    textAlign: "center"
+  },
+
   paper: {
     marginTop: 10,
     marginBottom: 10
@@ -55,17 +66,17 @@ class Feed extends Component {
       job_avatars: [
         {
           img: "/assets/images/nail_avatar.jpeg",
-          label: "Làm Nail",
+          label: "Nail",
           job_id: 1
         },
         {
           img: "/assets/images/hau_ban.jpeg",
-          label: "Hầu Bàn",
+          label: "Server",
           job_id: 2
         },
         {
           img: "/assets/images/cooking.jpeg",
-          label: "Phụ Bếp",
+          label: "Cook",
           job_id: 3
         }
       ],
@@ -86,7 +97,7 @@ class Feed extends Component {
     );
   }
 
-  handleClickOpen = (event) => {
+  handleClickOpen = event => {
     const job_id = event.currentTarget.getAttribute("data-jobid");
     this.setState({ open: true, job_id });
   };
@@ -95,14 +106,14 @@ class Feed extends Component {
     this.setState({ open: false });
   };
 
-  handlePhoneNumberFormat = (phoneNumber) => {
-    return `tel: ${phoneNumber}`
-  }
+  handlePhoneNumberFormat = phoneNumber => {
+    return `tel: ${phoneNumber}`;
+  };
 
-  handleDateFormat = (date) => {
+  handleDateFormat = date => {
     const formattedDate = date.substring(0, 10);
-    return formattedDate
-  }
+    return formattedDate;
+  };
 
   render() {
     const { classes } = this.props;
@@ -111,10 +122,14 @@ class Feed extends Component {
         <AppBar position="static" color="primary">
           <Toolbar>
             <Typography variant="h6" color="inherit">
-              Xin Việc
+              ViecConnect - Nơi tìm việc nhanh
             </Typography>
           </Toolbar>
         </AppBar>
+
+        <Typography className={classes.header} variant="h6" color="textSecondary">
+          Bạn muốn xin việc gì?
+        </Typography>
 
         <Grid
           container
@@ -149,150 +164,45 @@ class Feed extends Component {
 
         {this.state.posts.map(post => {
           return (
-          <Card className={classes.Card}>
-            <CardHeader
-              avatar={
-                <Avatar
-                  aria-label={post.job_name}
-                  alt={post.job_name}
-                  src={post.job_avatar}
+            <Card className={classes.Card}>
+              <CardHeader
+                avatar={
+                  <Avatar
+                    aria-label={post.job_name}
+                    alt={post.job_name}
+                    src={post.job_avatar}
+                  />
+                }
+                action={
+                  <IconButton>
+                    <a href={this.handlePhoneNumberFormat()}>
+                      <Icon>call</Icon>
+                    </a>
+                  </IconButton>
+                }
+                title={post.username}
+                subheader={this.handleDateFormat(post.post_date)}
+              />
+              <CardContent>
+                <Typography component="p">{post.post_content}</Typography>
+              </CardContent>
+              <CardActions className={classes.tags}>
+                <Chip
+                  className={classes.chips}
+                  label={"Khu Vực Gần: " + post.job_location}
                 />
-              }
-              action={
-                <IconButton>
-                  <a href={this.handlePhoneNumberFormat()}>
-                    <Icon>call</Icon>
-                  </a>
-                </IconButton>
-              }
-              title={post.username}
-              subheader={this.handleDateFormat(post.post_date)}
-            />
-            <CardContent>
-              <Typography component="p">
-                {post.post_content}
-              </Typography>
-            </CardContent>
-            <CardActions className={classes.tags}>
-              <Chip className={classes.chips} label={"Khu Vực Gần: " + post.job_location} />
-              <Chip className={classes.chips} label={"Kinh Nghiệm: " + post.experience} />
-              <Chip
-                className={classes.chips}
-                label={"Lương Bổng: " + post.salary}
-              />
-            </CardActions>
-          </Card>
-          )
-      })}
-
-        {/* <Card className={classes.Card}>
-          <CardHeader
-            avatar={
-              <Avatar
-                aria-label="Làm Nail"
-                alt="nail"
-                src="/assets/images/hau_ban.jpeg"
-              />
-            }
-            action={
-              <IconButton>
-                <a href="tel: 111-111-1111">
-                  <Icon>call</Icon>
-                </a>
-              </IconButton>
-            }
-            title="Simon Nguyen"
-            subheader="September 14, 2016"
-          />
-          <CardContent>
-            <Typography component="p">
-              This impressive paella is a perfect party dish and a fun meal to
-              cook together with your guests. Add 1 cup of frozen peas along
-              with the mussels, if you like.
-            </Typography>
-          </CardContent>
-          <CardActions className={classes.tags}>
-            <Chip className={classes.chips} label="Khu Vực: San Mateo" />
-            <Chip className={classes.chips} label="Kinh Nghiệm: 1-2 năm" />
-            <Chip
-              className={classes.chips}
-              label="Lương Bổng: $800-1000/tháng"
-            />
-          </CardActions>
-        </Card>
-
-        <Card className={classes.Card}>
-          <CardHeader
-            avatar={
-              <Avatar
-                aria-label="Làm Nail"
-                alt="nail"
-                src="/assets/images/hau_ban.jpeg"
-              />
-            }
-            action={
-              <IconButton>
-                <a href="tel: 111-111-1111">
-                  <Icon>call</Icon>
-                </a>
-              </IconButton>
-            }
-            title="Simon Nguyen"
-            subheader="September 14, 2016"
-          />
-          <CardContent>
-            <Typography component="p">
-              This impressive paella is a perfect party dish and a fun meal to
-              cook together with your guests. Add 1 cup of frozen peas along
-              with the mussels, if you like.
-            </Typography>
-          </CardContent>
-          <CardActions className={classes.tags}>
-            <Chip className={classes.chips} label="Khu Vực: San Mateo" />
-            <Chip className={classes.chips} label="Kinh Nghiệm: 1-2 năm" />
-            <Chip
-              className={classes.chips}
-              label="Lương Bổng: $800-1000/tháng"
-            />
-          </CardActions>
-        </Card>
-
-        <Card className={classes.Card}>
-          <CardHeader
-            avatar={
-              <Avatar
-                aria-label="Làm Nail"
-                alt="nail"
-                src="/assets/images/hau_ban.jpeg"
-              />
-            }
-            action={
-              <IconButton>
-                <a href="tel: 111-111-1111">
-                  <Icon>call</Icon>
-                </a>
-              </IconButton>
-            }
-            title="Simon Nguyen"
-            subheader="September 14, 2016"
-          />
-          <CardContent>
-            <Typography component="p">
-              This impressive paella is a perfect party dish and a fun meal to
-              cook together with your guests. Add 1 cup of frozen peas along
-              with the mussels, if you like.
-            </Typography>
-          </CardContent>
-          <CardActions className={classes.tags}>
-            <Chip className={classes.chips} label="Khu Vực: San Mateo" />
-            <Chip className={classes.chips} label="Kinh Nghiệm: 1-2 năm" />
-            <Chip
-              className={classes.chips}
-              label="Lương Bổng: $800-1000/tháng"
-            />
-          </CardActions>
-        </Card> */}
-
+                <Chip
+                  className={classes.chips}
+                  label={"Kinh Nghiệm: " + post.experience}
+                />
+                <Chip
+                  className={classes.chips}
+                  label={"Lương Bổng: " + post.salary}
+                />
+              </CardActions>
+            </Card>
+          );
+        })}
         <Post
           PostOpen={this.state.open}
           PostOpenHandling={this.handleClickOpen}

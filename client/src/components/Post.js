@@ -27,6 +27,11 @@ const styles = {
     justifyContent: "space-between"
   },
 
+  dialog: {
+    margin: "auto",
+    maxWidth: 900
+  },
+
   textField: {
     padding: 10
   },
@@ -54,21 +59,26 @@ class Post extends Component {
         { label: "", value: "" },
         { label: "San Jose", value: "San Jose" },
         { label: "San Mateo", value: "San Mateo" },
-        { label: "San Francisco", value: "San Francisco" }
+        { label: "San Francisco", value: "San Francisco" },
+        { label: "Santa Rosa", value: "Santa Rosa" },
+        { label: "Oakland", value: "Oakland" },
+        { label: "Pleasanton", value: "Pleasanton" }
       ],
       experience: "",
       experienceChoices: [
         { label: "", value: "" },
         { label: "0-2 năm", value: "0-2 năm" },
         { label: "2-4 năm", value: "2-4 năm" },
-        { label: "4-6 năm", value: "4-6 năm" }
+        { label: "4-6 năm", value: "4-6 năm" },
+        { label: "6-8 năm", value: "6-8 năm" }
       ],
       salary: "",
       salaryChoices: [
         { label: "", value: "" },
         { label: "$1000-$3000/tháng", value: "$1000-$3000/tháng" },
         { label: "$3000-$5000/tháng", value: "$3000-$5000/tháng" },
-        { label: "$5000-$7000/tháng", value: "$5000-$7000/tháng" }
+        { label: "$5000-$7000/tháng", value: "$5000-$7000/tháng" },
+        { label: "$7000-$10000/tháng", value: "$5000-$7000/tháng" }
       ],
       phoneNumber: "",
       fullName: ""
@@ -89,6 +99,8 @@ class Post extends Component {
 
   handleSalaryChange = salary => event => {
     this.setState({ [salary]: event.target.value });
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
   };
 
   handlePhoneNumberChange = phoneNumber => event => {
@@ -147,6 +159,7 @@ class Post extends Component {
     return (
       <div>
         <Dialog
+          className={classes.dialog}
           fullScreen
           open={this.props.PostOpen}
           onClose={this.props.PostOpenHandling}
@@ -165,7 +178,7 @@ class Post extends Component {
                 Đăng Tin
               </Typography>
               {this.handlePostValidation(postContent, location, experience, salary, fullName, phoneNumber) ?
-                <IconButton color="inherit" onClick={this.createPost}>
+                <IconButton color="secondary" onClick={this.createPost}>
                   <SendIcon />
                 </IconButton>
                 :
@@ -186,11 +199,11 @@ class Post extends Component {
               }
             }}
             required
-            rows="10"
+            rows="5"
             value={this.state.postContent}
             onChange={this.handlePostContentChange("postContent")}
             className={classes.textField}
-            placeholder="Rao tin công việc bạn đang tìm kiếm."
+            placeholder="Thông tin của người xin việc."
             margin="normal"
             helperText="Để được tuyển dụng nhanh, bạn nên mô tả chi tiếc về bản thân mình cho công việc bạn đang tìm kiếm, như kỹ năng hay kinh nghiệm."
           />

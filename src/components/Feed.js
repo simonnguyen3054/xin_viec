@@ -85,7 +85,7 @@ class Feed extends Component {
         <AppBar position="static" color="primary">
           <Toolbar>
             <Typography variant="h6" color="inherit">
-              Xin Việc
+              ViecConnect - Nơi tìm việc nhanh
             </Typography>
           </Toolbar>
         </AppBar>
