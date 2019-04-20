@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { _loadPostItem } from "../services/feedService";
+import { _loadPosts, _loadPostItem } from "../services/feedService";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -15,6 +15,9 @@ import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
 import CardMedia from "@material-ui/core/CardMedia";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import CardHeader from "@material-ui/core/CardHeader";
+import Avatar from "@material-ui/core/Avatar";
+import CardActionArea from "@material-ui/core/CardActionArea";
 
 const styles = {
   root: {
@@ -55,23 +58,69 @@ const styles = {
   chips: {
     marginRight: 10,
     marginBottom: 10
+  },
+
+  header: {
+    marginTop: 50,
+    marginBottom: 20,
+    textAlign: "center"
+  },
+
+  Card: {
+    marginTop: 10,
+    borderRadius: 0
+  },
+
+  cardActionAreaLink: {
+    textDecoration: "none"
   }
+
 };
 
 class PostItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      postItem: []
+      postItem: [],
+      posts: []
     };
   }
 
   componentDidMount() {
     const { post_id } = this.props.match.params;
-    return _loadPostItem(post_id).then(resultingJSON =>
+    _loadPostItem(post_id).then(resultingJSON =>
       this.setState({ postItem: resultingJSON })
     );
+
+    _loadPosts().then(resultingJSON =>
+      this.setState({ posts: resultingJSON })
+    );
   }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (nextProps.match.params.product !== prevState.currentProductId){
+  //      const currentProductId = nextProps.match.params.product
+  //      const result = productlist.products.filter(obj => {
+
+  //        return obj.id === currentProductId;
+
+  //      })
+  //     return {
+
+  //        product: result[0],
+  //        currentId: currentProductId,
+  //        result
+
+  //      }
+  //  }
+  debugger
+   return null;
+ }
+
+  handleDateFormat = date => {
+    const formattedDate = date.substring(0, 10);
+    return formattedDate;
+  };
 
   render() {
     const { classes } = this.props;
@@ -163,6 +212,64 @@ class PostItem extends Component {
                   label={"Lương Bổng: " + item.salary}
                 />
               </CardActions>
+            </Card>
+          );
+        })}
+
+        <Typography
+          className={classes.header}
+          variant="h6"
+          color="textSecondary"
+        >
+          Nhân sự khác đang cần việc
+          </Typography>
+          {this.state.posts.map(post => {
+          return (
+            <Card key={post.post_id} className={classes.Card}>
+              <CardHeader
+                avatar={
+                  <Avatar
+                    aria-label={post.job_name}
+                    alt={post.job_name}
+                    src={post.job_avatar}
+                  />
+                }
+                action={
+                  <IconButton>
+                    <a href={"tel: " + post.phone_number}>
+                      <Icon>call</Icon>
+                    </a>
+                  </IconButton>
+                }
+                title={post.username}
+                subheader={this.handleDateFormat(post.post_date)}
+              />
+
+              <Link
+                className={classes.cardActionAreaLink}
+                to={"/posts/" + post.post_id}
+              >
+                <CardActionArea onClick={this.reRoutePostItem}>
+                  <CardContent>
+                    <Typography component="p">{post.post_content}</Typography>
+                  </CardContent>
+
+                  <CardActions className={classes.tags}>
+                    <Chip
+                      className={classes.chips}
+                      label={"Khu Vực Gần: " + post.job_location}
+                    />
+                    <Chip
+                      className={classes.chips}
+                      label={"Kinh Nghiệm: " + post.experience}
+                    />
+                    <Chip
+                      className={classes.chips}
+                      label={"Lương Bổng: " + post.salary}
+                    />
+                  </CardActions>
+                </CardActionArea>
+              </Link>
             </Card>
           );
         })}

@@ -199,26 +199,26 @@ class Feed extends Component {
                 className={classes.cardActionAreaLink}
                 to={"/posts/" + post.post_id}
               >
-                <CardActionArea>
-                  <CardContent>
-                    <Typography component="p">{post.post_content}</Typography>
-                  </CardContent>
+              <CardActionArea>
+                <CardContent>
+                  <Typography component="p">{post.post_content}</Typography>
+                </CardContent>
 
-                  <CardActions className={classes.tags}>
-                    <Chip
-                      className={classes.chips}
-                      label={"Khu Vực Gần: " + post.job_location}
-                    />
-                    <Chip
-                      className={classes.chips}
-                      label={"Kinh Nghiệm: " + post.experience}
-                    />
-                    <Chip
-                      className={classes.chips}
-                      label={"Lương Bổng: " + post.salary}
-                    />
-                  </CardActions>
-                </CardActionArea>
+                <CardActions className={classes.tags}>
+                  <Chip
+                    className={classes.chips}
+                    label={"Khu Vực Gần: " + post.job_location}
+                  />
+                  <Chip
+                    className={classes.chips}
+                    label={"Kinh Nghiệm: " + post.experience}
+                  />
+                  <Chip
+                    className={classes.chips}
+                    label={"Lương Bổng: " + post.salary}
+                  />
+                </CardActions>
+              </CardActionArea>
               </Link>
             </Card>
           );
