@@ -23,6 +23,7 @@ export const _createPost = (fullName, job_id, phone_number, post_content, job_lo
 }
 
 export const _loadPostItem = (post_id) => {
+
   const settings = {
     method: "GET",
     headers: {

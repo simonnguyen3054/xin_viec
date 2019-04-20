@@ -34,9 +34,25 @@ const styles = {
     minHeight: 60
   },
 
+  postHeader: {
+    display: "flex",
+    justifyContent: "space-between"
+  },
+
   media: {
     height: 250
-  }
+  },
+
+  tags: {
+    marginBottom: 10,
+    display: "flex",
+    flexWrap: "wrap"
+  },
+
+  chips: {
+    marginRight: 10,
+    marginBottom: 10
+  },
 };
 
 class PostItem extends Component {
@@ -50,9 +66,7 @@ class PostItem extends Component {
   componentDidMount() {
     const { post_id } = this.props.match.params;
     return _loadPostItem(post_id).then(resultingJSON =>
-      { debugger
       this.setState({ postItem: resultingJSON })
-      }
     );
   }
 
@@ -71,25 +85,54 @@ class PostItem extends Component {
           </Toolbar>
         </AppBar>
 
-        <Card>
-          <IconButton className={classes.backIcon} color="secondary">
-            <ArrowBackIosIcon />
-          </IconButton>
-          <CardMedia
-            className={classes.media}
-            image="https://s3-us-west-1.amazonaws.com/acceptmycrypto/dealsImages/acceptmycrypto/sample-deal-images/cooking.jpeg"
-            title="Contemplative Reptile"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              Lizard
-            </Typography>
-            <Typography component="p">
-              Lizards are a widespread group of squamate reptiles, with over
-              6,000 species, ranging across all continents except Antarctica
-            </Typography>
-          </CardContent>
-        </Card>
+        {this.state.postItem.map(item => {
+          return (
+            <Card key={item.id}>
+              <CardActions className={classes.postHeader}>
+                <IconButton className={classes.backIcon} color="default">
+                  <ArrowBackIosIcon />
+                </IconButton>
+
+                <div>
+                  <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+
+                  <IconButton>
+                    <a href={"tel: " + item.phone_number}>
+                      <Icon>call</Icon>
+                    </a>
+                  </IconButton>
+                </div>
+              </CardActions>
+
+
+              <CardMedia
+                className={classes.media}
+                image={item.job_avatar}
+                title={item.job_name}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {item.username}
+                </Typography>
+                <Typography component="p">{item.post_content}</Typography>
+              </CardContent>
+              <CardActions className={classes.tags}>
+                <Chip
+                  className={classes.chips}
+                  label={"Khu Vực Gần: " + item.job_location}
+                />
+                <Chip
+                  className={classes.chips}
+                  label={"Kinh Nghiệm: " + item.experience}
+                />
+                <Chip
+                  className={classes.chips}
+                  label={"Lương Bổng: " + item.salary}
+                />
+              </CardActions>
+            </Card>
+          );
+        })}
       </div>
     );
   }
