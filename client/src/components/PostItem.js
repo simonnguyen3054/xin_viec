@@ -74,7 +74,6 @@ const styles = {
   cardActionAreaLink: {
     textDecoration: "none"
   }
-
 };
 
 class PostItem extends Component {
@@ -92,34 +91,30 @@ class PostItem extends Component {
       this.setState({ postItem: resultingJSON })
     );
 
-    _loadPosts().then(resultingJSON =>
-      this.setState({ posts: resultingJSON })
-    );
+    _loadPosts().then(resultingJSON => this.setState({ posts: resultingJSON }));
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (nextProps.match.params.product !== prevState.currentProductId){
-  //      const currentProductId = nextProps.match.params.product
-  //      const result = productlist.products.filter(obj => {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.postItem[0] == undefined) {
+      return false;
+    }
 
-  //        return obj.id === currentProductId;
-
-  //      })
-  //     return {
-
-  //        product: result[0],
-  //        currentId: currentProductId,
-  //        result
-
-  //      }
-  //  }
-  debugger
-   return null;
- }
+    if (prevProps.match.params.post_id !== prevState.postItem[0].id) {
+      const { post_id } = this.props.match.params;
+      _loadPostItem(post_id).then(resultingJSON => {
+        this.setState({ postItem: resultingJSON });
+      });
+    }
+  }
 
   handleDateFormat = date => {
     const formattedDate = date.substring(0, 10);
     return formattedDate;
+  };
+
+  moveToTop = () => {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
   };
 
   render() {
@@ -222,8 +217,8 @@ class PostItem extends Component {
           color="textSecondary"
         >
           Nhân sự khác đang cần việc
-          </Typography>
-          {this.state.posts.map(post => {
+        </Typography>
+        {this.state.posts.map(post => {
           return (
             <Card key={post.post_id} className={classes.Card}>
               <CardHeader
@@ -249,7 +244,7 @@ class PostItem extends Component {
                 className={classes.cardActionAreaLink}
                 to={"/posts/" + post.post_id}
               >
-                <CardActionArea onClick={this.reRoutePostItem}>
+                <CardActionArea onClick={this.moveToTop}>
                   <CardContent>
                     <Typography component="p">{post.post_content}</Typography>
                   </CardContent>
