@@ -49,14 +49,12 @@ exports.post_create = (req, res) => {
 };
 
 exports.post_get = (req, res) => {
-  
-  let post_id = req.body.params;
 
   let post_query =
-    "SELECT * FROM posts LEFT JOIN jobs ON jobs.id = posts.job_id where posts.id = ?";
+    "SELECT * FROM posts LEFT JOIN jobs ON jobs.id = posts.job_id WHERE posts.id = ?";
 
   database
-    .query(feed_query, [post_id])
+    .query(post_query, [req.params.id])
     .then(results => {
       res.json(results);
     })
