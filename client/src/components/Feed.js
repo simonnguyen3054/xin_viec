@@ -146,7 +146,7 @@ class Feed extends Component {
               <span>ViecConnect</span>
             </Typography>
             <Typography variant="subtitle2" color="inherit">
-              Kết nói việc làm trong cộng động.
+              Kết nói việc làm trong cộng đồng.
             </Typography>
           </Toolbar>
         </AppBar>
@@ -231,7 +231,7 @@ class Feed extends Component {
             </Card>
           );
         })}
-        
+
         <Post
           PostOpen={this.state.open}
           PostOpenHandling={this.handleClickOpen}
