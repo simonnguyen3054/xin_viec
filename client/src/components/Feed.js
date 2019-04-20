@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Post from "./Post";
 import { _loadPosts } from "../services/feedService";
+import { Helmet } from "react-helmet";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -98,6 +99,29 @@ class Feed extends Component {
     );
   }
 
+  handleMetaTags = (url, title, description, image) => {
+    return (
+      <Helmet>
+        <meta property="og:url" content={url} />
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:title"
+          content={title}
+        />
+        <meta
+          property="og:description"
+          content={description}
+        />
+        <meta
+          property="og:image"
+          content={image}
+        />
+        <meta property="og:locale" content="vi_VN" />
+        <meta property="fb:app_id" content="587150191805387" />
+      </Helmet>
+    );
+  };
+
   handleClickOpen = event => {
     const job_id = event.currentTarget.getAttribute("data-jobid");
     this.setState({ open: true, job_id });
@@ -127,7 +151,11 @@ class Feed extends Component {
           </Toolbar>
         </AppBar>
 
-        <Typography className={classes.header} variant="h6" color="textSecondary">
+        <Typography
+          className={classes.header}
+          variant="h6"
+          color="textSecondary"
+        >
           Bạn muốn xin việc gì?
         </Typography>
 
@@ -203,6 +231,7 @@ class Feed extends Component {
             </Card>
           );
         })}
+        
         <Post
           PostOpen={this.state.open}
           PostOpenHandling={this.handleClickOpen}
