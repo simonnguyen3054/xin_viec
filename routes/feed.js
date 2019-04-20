@@ -7,4 +7,6 @@ router.get("/api/feed", feedController.feed_get);
 
 router.post("/api/post/create", feedController.post_create);
 
+router.get("/api/post/:id", feedController.post_get);
+
 module.exports = router;

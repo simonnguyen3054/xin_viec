@@ -23,6 +23,12 @@ const styles = {
     flexGrow: 1
   },
 
+  appBar: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start"
+  },
+
   header: {
     margin: 20,
     textAlign: "center"
@@ -111,9 +117,12 @@ class Feed extends Component {
     return (
       <div className={classes.root}>
         <AppBar position="static" color="primary">
-          <Toolbar>
+          <Toolbar className={classes.appBar}>
             <Typography variant="h6" color="inherit">
-              ViecConnect - Nơi tìm việc nhanh
+              <span>ViecConnect</span>
+            </Typography>
+            <Typography variant="subtitle2" color="inherit">
+              Kết nói việc làm trong cộng động.
             </Typography>
           </Toolbar>
         </AppBar>
