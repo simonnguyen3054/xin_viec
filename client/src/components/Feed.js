@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Post from "./Post";
 import { _loadPosts } from "../services/feedService";
-import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -14,6 +14,7 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import CardContent from "@material-ui/core/CardContent";
 import { Card } from "@material-ui/core";
+import CardActionArea from "@material-ui/core/CardActionArea";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
@@ -58,6 +59,10 @@ const styles = {
   Card: {
     marginTop: 10,
     borderRadius: 0
+  },
+
+  cardActionAreaLink: {
+    textDecoration: "none"
   }
 };
 
@@ -99,29 +104,6 @@ class Feed extends Component {
       this.setState({ posts: resultingJSON })
     );
   }
-
-  handleMetaTags = (url, title, description, image) => {
-    return (
-      <Helmet>
-        <meta property="og:url" content={url} />
-        <meta property="og:type" content="article" />
-        <meta
-          property="og:title"
-          content={title}
-        />
-        <meta
-          property="og:description"
-          content={description}
-        />
-        <meta
-          property="og:image"
-          content={image}
-        />
-        <meta property="og:locale" content="vi_VN" />
-        <meta property="fb:app_id" content="587150191805387" />
-      </Helmet>
-    );
-  };
 
   handleClickOpen = event => {
     const job_id = event.currentTarget.getAttribute("data-jobid");
@@ -193,7 +175,7 @@ class Feed extends Component {
 
         {this.state.posts.map(post => {
           return (
-            <Card className={classes.Card}>
+            <Card key={post.post_id} className={classes.Card}>
               <CardHeader
                 avatar={
                   <Avatar
@@ -212,23 +194,32 @@ class Feed extends Component {
                 title={post.username}
                 subheader={this.handleDateFormat(post.post_date)}
               />
-              <CardContent>
-                <Typography component="p">{post.post_content}</Typography>
-              </CardContent>
-              <CardActions className={classes.tags}>
-                <Chip
-                  className={classes.chips}
-                  label={"Khu Vực Gần: " + post.job_location}
-                />
-                <Chip
-                  className={classes.chips}
-                  label={"Kinh Nghiệm: " + post.experience}
-                />
-                <Chip
-                  className={classes.chips}
-                  label={"Lương Bổng: " + post.salary}
-                />
-              </CardActions>
+
+              <Link
+                className={classes.cardActionAreaLink}
+                to={"/posts/" + post.post_id}
+              >
+                <CardActionArea>
+                  <CardContent>
+                    <Typography component="p">{post.post_content}</Typography>
+                  </CardContent>
+
+                  <CardActions className={classes.tags}>
+                    <Chip
+                      className={classes.chips}
+                      label={"Khu Vực Gần: " + post.job_location}
+                    />
+                    <Chip
+                      className={classes.chips}
+                      label={"Kinh Nghiệm: " + post.experience}
+                    />
+                    <Chip
+                      className={classes.chips}
+                      label={"Lương Bổng: " + post.salary}
+                    />
+                  </CardActions>
+                </CardActionArea>
+              </Link>
             </Card>
           );
         })}

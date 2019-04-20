@@ -1,24 +1,18 @@
 import React, { Component } from "react";
-import Post from "./Post";
 import { _loadPostItem } from "../services/feedService";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
 import Chip from "@material-ui/core/Chip";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
 import CardContent from "@material-ui/core/CardContent";
 import { Card } from "@material-ui/core";
-import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
@@ -39,6 +33,15 @@ const styles = {
     justifyContent: "space-between"
   },
 
+  headerIcons: {
+    display: "flex",
+    alignItems: "center"
+  },
+
+  callIcon: {
+    marginLeft: 10
+  },
+
   media: {
     height: 250
   },
@@ -52,7 +55,7 @@ const styles = {
   chips: {
     marginRight: 10,
     marginBottom: 10
-  },
+  }
 };
 
 class PostItem extends Component {
@@ -74,6 +77,22 @@ class PostItem extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
+        {this.state.postItem.map(item => {
+          return (
+            <Helmet key={item.id}>
+              <meta
+                property="og:url"
+                content={"http://www.viecconnect.com//posts/" + item.id}
+              />
+              <meta property="og:type" content="article" />
+              <meta property="og:title" content={item.username} />
+              <meta property="og:description" content={item.post_content} />
+              <meta property="og:image" content={item.job_avatar} />
+              <meta property="og:locale" content="vi_VN" />
+              <meta property="fb:app_id" content="587150191805387" />
+            </Helmet>
+          );
+        })}
         <AppBar position="static" color="primary">
           <Toolbar className={classes.appBar}>
             <Typography variant="h6" color="inherit">
@@ -89,21 +108,35 @@ class PostItem extends Component {
           return (
             <Card key={item.id}>
               <CardActions className={classes.postHeader}>
-                <IconButton className={classes.backIcon} color="default">
-                  <ArrowBackIosIcon />
-                </IconButton>
+                <Link to="/">
+                  <IconButton className={classes.backIcon} color="default">
+                    <ArrowBackIosIcon />
+                  </IconButton>
+                </Link>
 
-                <div>
-                  <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+                <div className={classes.headerIcons}>
+                  <div
+                    className="fb-share-button"
+                    data-href={"http://www.viecconnect.com//posts/" + item.id}
+                    data-layout="button"
+                    data-size="small"
+                  >
+                    <a
+                      target="_blank"
+                      href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
+                      className="fb-xfbml-parse-ignore"
+                    >
+                      Share
+                    </a>
+                  </div>
 
-                  <IconButton>
+                  <IconButton className={classes.callIcon}>
                     <a href={"tel: " + item.phone_number}>
                       <Icon>call</Icon>
                     </a>
                   </IconButton>
                 </div>
               </CardActions>
-
 
               <CardMedia
                 className={classes.media}
