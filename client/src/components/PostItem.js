@@ -86,6 +86,11 @@ class PostItem extends Component {
   }
 
   componentDidMount() {
+
+    if (window.FB) {
+      window.FB.XFBML.parse();
+    }
+
     const { post_id } = this.props.match.params;
     _loadPostItem(post_id).then(resultingJSON =>
       this.setState({ postItem: resultingJSON })
@@ -95,6 +100,10 @@ class PostItem extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (window.FB) {
+      window.FB.XFBML.parse();
+    }
+    
     if (prevState.postItem[0] == undefined) {
       return false;
     }
@@ -105,6 +114,10 @@ class PostItem extends Component {
         this.setState({ postItem: resultingJSON });
       });
     }
+  }
+
+  componentWillUnmount() {
+
   }
 
   handleDateFormat = date => {
@@ -159,20 +172,8 @@ class PostItem extends Component {
                 </Link>
 
                 <div className={classes.headerIcons}>
-                  <div
-                    className="fb-share-button"
-                    data-href={"http://www.viecconnect.com//posts/" + item.id}
-                    data-layout="button"
-                    data-size="small"
-                  >
-                    <a
-                      target="_blank"
-                      href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
-                      className="fb-xfbml-parse-ignore"
-                    >
-                      Share
-                    </a>
-                  </div>
+
+                  <div class="fb-share-button" data-href={"http://www.viecconnect.com/" + item.post_id} data-layout="button" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
 
                   <IconButton className={classes.callIcon}>
                     <a href={"tel: " + item.phone_number}>
@@ -216,7 +217,7 @@ class PostItem extends Component {
           variant="h6"
           color="textSecondary"
         >
-          Nhân sự khác đang cần việc
+          Nhân sự khác đang tìm việc
         </Typography>
         {this.state.posts.map(post => {
           return (
