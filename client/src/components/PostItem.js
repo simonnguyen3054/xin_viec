@@ -42,7 +42,8 @@ const styles = {
   },
 
   callIcon: {
-    marginLeft: 10
+    marginLeft: 10,
+    color: "#3f51b5"
   },
 
   media: {
@@ -86,11 +87,6 @@ class PostItem extends Component {
   }
 
   componentDidMount() {
-
-    if (window.FB) {
-      window.FB.XFBML.parse();
-    }
-
     const { post_id } = this.props.match.params;
     _loadPostItem(post_id).then(resultingJSON =>
       this.setState({ postItem: resultingJSON })
@@ -100,10 +96,6 @@ class PostItem extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (window.FB) {
-      window.FB.XFBML.parse();
-    }
-    
     if (prevState.postItem[0] == undefined) {
       return false;
     }
@@ -116,9 +108,15 @@ class PostItem extends Component {
     }
   }
 
-  componentWillUnmount() {
-
-  }
+  handleFBShareDialog = url => {
+    window.FB.ui(
+      {
+        method: "share",
+        href: url
+      },
+      function(response) {}
+    );
+  };
 
   handleDateFormat = date => {
     const formattedDate = date.substring(0, 10);
@@ -172,8 +170,19 @@ class PostItem extends Component {
                 </Link>
 
                 <div className={classes.headerIcons}>
-
-                  <div class="fb-share-button" data-href={"http://www.viecconnect.com/" + item.post_id} data-layout="button" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+                  <IconButton
+                    onClick={() => {
+                      this.handleFBShareDialog(
+                        `http://www.viecconnect.com//posts/${item.id}`
+                      );
+                    }}
+                    className={classes.callIcon}
+                  >
+                    <i
+                      style={{ width: "24px", height: "29px" }}
+                      className="fab fa-facebook-square"
+                    />
+                  </IconButton>
 
                   <IconButton className={classes.callIcon}>
                     <a href={"tel: " + item.phone_number}>
