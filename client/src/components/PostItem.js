@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { _loadPosts, _loadPostItem } from "../services/feedService";
-import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -108,11 +107,19 @@ class PostItem extends Component {
     }
   }
 
-  handleFBShareDialog = url => {
+  handleFBShareDialog = (url, title, description, image) => {
     window.FB.ui(
       {
-        method: "share",
-        href: url
+        method: "share_open_graph",
+        action_type: 'og.shares',
+        action_properties: JSON.stringify({
+          object: {
+            'og:url': url,
+            'og:title': title,
+            'og:description': description,
+            'og:image': image
+         }
+        })
       },
       function(response) {}
     );
@@ -132,22 +139,6 @@ class PostItem extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        {this.state.postItem.map(item => {
-          return (
-            <Helmet key={item.id}>
-              <meta
-                property="og:url"
-                content={"http://www.viecconnect.com//posts/" + item.id}
-              />
-              <meta property="og:type" content="article" />
-              <meta property="og:title" content={item.username} />
-              <meta property="og:description" content={item.post_content} />
-              <meta property="og:image" content={item.job_avatar} />
-              <meta property="og:locale" content="vi_VN" />
-              <meta property="fb:app_id" content="587150191805387" />
-            </Helmet>
-          );
-        })}
         <AppBar position="static" color="primary">
           <Toolbar className={classes.appBar}>
             <Typography variant="h6" color="inherit">
@@ -173,7 +164,7 @@ class PostItem extends Component {
                   <IconButton
                     onClick={() => {
                       this.handleFBShareDialog(
-                        `http://www.viecconnect.com//posts/${item.id}`
+                        `http://www.viecconnect.com//posts/${item.id}`, item.username, item.post_content, item.job_avatar
                       );
                     }}
                     className={classes.callIcon}
