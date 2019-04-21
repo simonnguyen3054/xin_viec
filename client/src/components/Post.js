@@ -70,7 +70,8 @@ class Post extends Component {
         { label: "0-2 năm", value: "0-2 năm" },
         { label: "2-4 năm", value: "2-4 năm" },
         { label: "4-6 năm", value: "4-6 năm" },
-        { label: "6-8 năm", value: "6-8 năm" }
+        { label: "6-10 năm", value: "6-10 năm" },
+        { label: "10 năm hơn", value: "10 năm hơn" }
       ],
       salary: "",
       salaryChoices: [
@@ -78,7 +79,8 @@ class Post extends Component {
         { label: "$1000-$3000/tháng", value: "$1000-$3000/tháng" },
         { label: "$3000-$5000/tháng", value: "$3000-$5000/tháng" },
         { label: "$5000-$7000/tháng", value: "$5000-$7000/tháng" },
-        { label: "$7000-$10000/tháng", value: "$5000-$7000/tháng" }
+        { label: "$7000-$10000/tháng", value: "$5000-$7000/tháng" },
+        { label: "Có thể thương lượng", value: "Có thể thương lượng" }
       ],
       phoneNumber: "",
       fullName: ""

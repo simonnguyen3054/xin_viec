@@ -17,6 +17,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
 import CardActionArea from "@material-ui/core/CardActionArea";
+import Divider from '@material-ui/core/Divider';
 
 const styles = {
   root: {
@@ -63,6 +64,10 @@ const styles = {
   header: {
     marginTop: 50,
     marginBottom: 20,
+    textAlign: "center"
+  },
+
+  headerTypoGraphy: {
     textAlign: "center"
   },
 
@@ -212,12 +217,13 @@ class PostItem extends Component {
           );
         })}
 
+        <Divider className={classes.header} variant="middle" />
         <Typography
-          className={classes.header}
           variant="h6"
+          className={classes.headerTypoGraphy}
           color="textSecondary"
         >
-          Nhân sự khác đang tìm việc
+          Other Posts
         </Typography>
         {this.state.posts.map(post => {
           return (
