@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { _loadPosts, _loadPostItem } from "../services/feedService";
+import { _loadPosts, _loadPostDetail, _loadPostItem } from "../services/feedService";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -17,7 +17,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import Divider from '@material-ui/core/Divider';
+import Divider from "@material-ui/core/Divider";
 
 const styles = {
   root: {
@@ -92,11 +92,12 @@ class PostItem extends Component {
 
   componentDidMount() {
     const { post_id } = this.props.match.params;
-    _loadPostItem(post_id).then(resultingJSON =>
-      this.setState({ postItem: resultingJSON })
-    );
-
-    _loadPosts().then(resultingJSON => this.setState({ posts: resultingJSON }));
+    return _loadPostDetail(post_id).then(([postItemJSON, postsJSON]) => {
+      this.setState({
+        postItem: postItemJSON,
+        posts: postsJSON
+      });
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -104,9 +105,11 @@ class PostItem extends Component {
       return false;
     }
 
-    if (prevProps.match.params.post_id !== prevState.postItem[0].id) {
-      const { post_id } = this.props.match.params;
-      _loadPostItem(post_id).then(resultingJSON => {
+    let params_id = parseInt(prevProps.match.params.post_id);
+    let post_id = parseInt(prevState.postItem[0].id);
+
+    if (params_id !== post_id) {
+      return _loadPostItem(post_id).then(resultingJSON => {
         this.setState({ postItem: resultingJSON });
       });
     }
@@ -116,14 +119,14 @@ class PostItem extends Component {
     window.FB.ui(
       {
         method: "share_open_graph",
-        action_type: 'og.shares',
+        action_type: "og.shares",
         action_properties: JSON.stringify({
           object: {
-            'og:url': url,
-            'og:title': title,
-            'og:description': description,
-            'og:image': image
-         }
+            "og:url": url,
+            "og:title": title,
+            "og:description": description,
+            "og:image": image
+          }
         })
       },
       function(response) {}
@@ -169,7 +172,10 @@ class PostItem extends Component {
                   <IconButton
                     onClick={() => {
                       this.handleFBShareDialog(
-                        `http://www.viecconnect.com//posts/${item.id}`, item.username, item.post_content, item.job_avatar
+                        `http://www.viecconnect.com//posts/${item.id}`,
+                        item.username,
+                        item.post_content,
+                        item.job_avatar
                       );
                     }}
                     className={classes.callIcon}
@@ -223,57 +229,60 @@ class PostItem extends Component {
           className={classes.headerTypoGraphy}
           color="textSecondary"
         >
-          Other Posts
+          Tin Khác
         </Typography>
         {this.state.posts.map(post => {
-          return (
-            <Card key={post.post_id} className={classes.Card}>
-              <CardHeader
-                avatar={
-                  <Avatar
-                    aria-label={post.job_name}
-                    alt={post.job_name}
-                    src={post.job_avatar}
-                  />
-                }
-                action={
-                  <IconButton>
-                    <a href={"tel: " + post.phone_number}>
-                      <Icon>call</Icon>
-                    </a>
-                  </IconButton>
-                }
-                title={post.username}
-                subheader={this.handleDateFormat(post.post_date)}
-              />
+          if (post.post_id !== this.state.postItem[0].id) {
+            debugger;
+            return (
+              <Card key={post.post_id} className={classes.Card}>
+                <CardHeader
+                  avatar={
+                    <Avatar
+                      aria-label={post.job_name}
+                      alt={post.job_name}
+                      src={post.job_avatar}
+                    />
+                  }
+                  action={
+                    <IconButton>
+                      <a href={"tel: " + post.phone_number}>
+                        <Icon>call</Icon>
+                      </a>
+                    </IconButton>
+                  }
+                  title={post.username}
+                  subheader={this.handleDateFormat(post.post_date)}
+                />
 
-              <Link
-                className={classes.cardActionAreaLink}
-                to={"/posts/" + post.post_id}
-              >
-                <CardActionArea onClick={this.moveToTop}>
-                  <CardContent>
-                    <Typography component="p">{post.post_content}</Typography>
-                  </CardContent>
+                <Link
+                  className={classes.cardActionAreaLink}
+                  to={"/posts/" + post.post_id}
+                >
+                  <CardActionArea onClick={this.moveToTop}>
+                    <CardContent>
+                      <Typography component="p">{post.post_content}</Typography>
+                    </CardContent>
 
-                  <CardActions className={classes.tags}>
-                    <Chip
-                      className={classes.chips}
-                      label={"Khu Vực Gần: " + post.job_location}
-                    />
-                    <Chip
-                      className={classes.chips}
-                      label={"Kinh Nghiệm: " + post.experience}
-                    />
-                    <Chip
-                      className={classes.chips}
-                      label={"Lương Bổng: " + post.salary}
-                    />
-                  </CardActions>
-                </CardActionArea>
-              </Link>
-            </Card>
-          );
+                    <CardActions className={classes.tags}>
+                      <Chip
+                        className={classes.chips}
+                        label={"Khu Vực Gần: " + post.job_location}
+                      />
+                      <Chip
+                        className={classes.chips}
+                        label={"Kinh Nghiệm: " + post.experience}
+                      />
+                      <Chip
+                        className={classes.chips}
+                        label={"Lương Bổng: " + post.salary}
+                      />
+                    </CardActions>
+                  </CardActionArea>
+                </Link>
+              </Card>
+            );
+          }
         })}
       </div>
     );
