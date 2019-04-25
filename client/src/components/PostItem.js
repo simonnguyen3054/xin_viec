@@ -90,8 +90,7 @@ class PostItem extends Component {
     super(props);
     this.state = {
       postItem: [],
-      posts: [],
-      post_id: null
+      posts: []
     };
   }
 
@@ -100,8 +99,7 @@ class PostItem extends Component {
     return _loadPostDetail(post_id).then(([postItemJSON, postsJSON]) => {
       this.setState({
         postItem: postItemJSON,
-        posts: postsJSON,
-        post_id: this.props.match.params
+        posts: postsJSON
       });
     });
   }
@@ -110,13 +108,8 @@ class PostItem extends Component {
   componentDidUpdate(prevProps) {
     const { post_id } = this.props.match.params;
     if (prevProps.match.params.post_id !== this.props.match.params.post_id) {
-      return _loadPostDetail(post_id).then(([postItemJSON, postsJSON]) => {
-        this.setState({
-          postItem: postItemJSON,
-          posts: postsJSON,
-          post_id: this.props.match.params
-        });
-
+      return _loadPostItem(post_id).then(resultingJSON => {
+        this.setState({ postItem: resultingJSON });
         this.moveToTop();
       });
     }
@@ -240,59 +233,54 @@ class PostItem extends Component {
           Tin Khác
         </Typography>
         {this.state.posts.map(post => {
-          if (
-            this.state.postItem[0] &&
-            post.post_id !== this.state.postItem[0].id
-          ) {
-            return (
-              <Card key={post.post_id} className={classes.Card}>
-                <CardHeader
-                  avatar={
-                    <Avatar
-                      aria-label={post.job_name}
-                      alt={post.job_name}
-                      src={post.job_avatar}
+          return (
+            <Card key={post.post_id} className={classes.Card}>
+              <CardHeader
+                avatar={
+                  <Avatar
+                    aria-label={post.job_name}
+                    alt={post.job_name}
+                    src={post.job_avatar}
+                  />
+                }
+                action={
+                  <IconButton>
+                    <a href={"tel: " + post.phone_number}>
+                      <Icon>call</Icon>
+                    </a>
+                  </IconButton>
+                }
+                title={post.username}
+                subheader={this.handleDateFormat(post.post_date)}
+              />
+
+              <Link
+                className={classes.cardActionAreaLink}
+                to={"/posts/" + post.post_id}
+              >
+                <CardActionArea>
+                  <CardContent>
+                    <Typography component="p">{post.post_content}</Typography>
+                  </CardContent>
+
+                  <CardActions className={classes.tags}>
+                    <Chip
+                      className={classes.chips}
+                      label={"Khu Vực Gần: " + post.job_location}
                     />
-                  }
-                  action={
-                    <IconButton>
-                      <a href={"tel: " + post.phone_number}>
-                        <Icon>call</Icon>
-                      </a>
-                    </IconButton>
-                  }
-                  title={post.username}
-                  subheader={this.handleDateFormat(post.post_date)}
-                />
-
-                <Link
-                  className={classes.cardActionAreaLink}
-                  to={"/posts/" + post.post_id}
-                >
-                  <CardActionArea>
-                    <CardContent>
-                      <Typography component="p">{post.post_content}</Typography>
-                    </CardContent>
-
-                    <CardActions className={classes.tags}>
-                      <Chip
-                        className={classes.chips}
-                        label={"Khu Vực Gần: " + post.job_location}
-                      />
-                      <Chip
-                        className={classes.chips}
-                        label={"Kinh Nghiệm: " + post.experience}
-                      />
-                      <Chip
-                        className={classes.chips}
-                        label={"Lương Bổng: " + post.salary}
-                      />
-                    </CardActions>
-                  </CardActionArea>
-                </Link>
-              </Card>
-            );
-          }
+                    <Chip
+                      className={classes.chips}
+                      label={"Kinh Nghiệm: " + post.experience}
+                    />
+                    <Chip
+                      className={classes.chips}
+                      label={"Lương Bổng: " + post.salary}
+                    />
+                  </CardActions>
+                </CardActionArea>
+              </Link>
+            </Card>
+          );
         })}
       </div>
     );
