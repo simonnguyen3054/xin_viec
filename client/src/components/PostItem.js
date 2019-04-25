@@ -100,19 +100,29 @@ class PostItem extends Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.postItem[0] == undefined) {
-      return false;
-    }
-
-    let params_id = parseInt(prevProps.match.params.post_id);
-    let post_id = parseInt(prevState.postItem[0].id);
-
-    if (params_id !== post_id) {
-      return _loadPostItem(post_id).then(resultingJSON => {
-        this.setState({ postItem: resultingJSON });
+  componentDidUpdate() {
+    const { post_id } = this.props.match.params;
+    return _loadPostDetail(post_id).then(([postItemJSON, postsJSON]) => {
+      this.setState({
+        postItem: postItemJSON,
+        posts: postsJSON
       });
-    }
+
+      // this.moveToTop();
+    });
+    // if (prevState.postItem[0] == undefined) {
+    //   return false;
+    // }
+
+    // let params_id = parseInt(prevProps.match.params.post_id);
+    // let post_id = parseInt(prevState.postItem[0].id);
+
+    // if (params_id !== post_id) {
+    //   debugger
+    //   return _loadPostItem(post_id).then(resultingJSON => {
+    //     this.setState({ postItem: resultingJSON });
+    //   });
+    // }
   }
 
   handleFBShareDialog = (url, title, description, image) => {
@@ -199,10 +209,11 @@ class PostItem extends Component {
                 image={item.job_avatar}
                 title={item.job_name}
               />
+               <CardHeader
+                title={item.username}
+                subheader={this.handleDateFormat(item.post_date)}
+              />
               <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {item.username}
-                </Typography>
                 <Typography component="p">{item.post_content}</Typography>
               </CardContent>
               <CardActions className={classes.tags}>
@@ -232,8 +243,7 @@ class PostItem extends Component {
           Tin Khác
         </Typography>
         {this.state.posts.map(post => {
-          if (post.post_id !== this.state.postItem[0].id) {
-            debugger;
+          if (this.state.postItem[0] && post.post_id !== this.state.postItem[0].id) {
             return (
               <Card key={post.post_id} className={classes.Card}>
                 <CardHeader
@@ -259,7 +269,7 @@ class PostItem extends Component {
                   className={classes.cardActionAreaLink}
                   to={"/posts/" + post.post_id}
                 >
-                  <CardActionArea onClick={this.moveToTop}>
+                  <CardActionArea>
                     <CardContent>
                       <Typography component="p">{post.post_content}</Typography>
                     </CardContent>
