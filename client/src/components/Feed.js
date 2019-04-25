@@ -19,6 +19,9 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
+import Switch from "@material-ui/core/Switch";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const styles = {
   root: {
@@ -34,7 +37,7 @@ const styles = {
 
   header: {
     margin: 20,
-    textAlign: "center"
+    justifyContent: "center"
   },
 
   paper: {
@@ -89,7 +92,8 @@ class Feed extends Component {
         }
       ],
       open: false,
-      job_id: null
+      job_id: null,
+      job_seeking: true
     };
   }
 
@@ -119,6 +123,10 @@ class Feed extends Component {
     return formattedDate;
   };
 
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.checked });
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -134,13 +142,19 @@ class Feed extends Component {
           </Toolbar>
         </AppBar>
 
-        <Typography
-          className={classes.header}
-          variant="h6"
-          color="textSecondary"
-        >
-          Bạn muốn xin việc gì?
-        </Typography>
+        <FormGroup row className={classes.header}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.job_seeking}
+                onChange={this.handleChange("job_seeking")}
+                value={this.state.job_seeking ? "job_seeking" : "job_hiring"}
+              />
+            }
+            label={this.state.job_seeking ? "Xin Việc" : "Thuê Việc"}
+            labelPlacement="bottom"
+          />
+        </FormGroup>
 
         <Grid
           container
@@ -199,26 +213,26 @@ class Feed extends Component {
                 className={classes.cardActionAreaLink}
                 to={"/posts/" + post.post_id}
               >
-              <CardActionArea>
-                <CardContent>
-                  <Typography component="p">{post.post_content}</Typography>
-                </CardContent>
+                <CardActionArea>
+                  <CardContent>
+                    <Typography component="p">{post.post_content}</Typography>
+                  </CardContent>
 
-                <CardActions className={classes.tags}>
-                  <Chip
-                    className={classes.chips}
-                    label={"Khu Vực Gần: " + post.job_location}
-                  />
-                  <Chip
-                    className={classes.chips}
-                    label={"Kinh Nghiệm: " + post.experience}
-                  />
-                  <Chip
-                    className={classes.chips}
-                    label={"Lương Bổng: " + post.salary}
-                  />
-                </CardActions>
-              </CardActionArea>
+                  <CardActions className={classes.tags}>
+                    <Chip
+                      className={classes.chips}
+                      label={"Khu Vực Gần: " + post.job_location}
+                    />
+                    <Chip
+                      className={classes.chips}
+                      label={"Kinh Nghiệm: " + post.experience}
+                    />
+                    <Chip
+                      className={classes.chips}
+                      label={"Lương Bổng: " + post.salary}
+                    />
+                  </CardActions>
+                </CardActionArea>
               </Link>
             </Card>
           );

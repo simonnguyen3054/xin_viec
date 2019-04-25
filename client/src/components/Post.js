@@ -265,9 +265,9 @@ class Post extends Component {
               onChange={this.handleSalaryChange("salary")}
               input={<Input name="salary" id="post-salary" />}
             >
-              {this.state.salaryChoices.map(choice => {
+              {this.state.salaryChoices.map((choice, i) => {
                 return (
-                  <option key={choice.value} value={choice.value}>
+                  <option key={i} value={choice.value}>
                     {choice.label}
                   </option>
                 );
