@@ -12,7 +12,7 @@ class App extends Component {
       <Switch>
         <div className="App">
           <Route exact path="/" component={Feed} />
-          <Route exact path="/posts/:post_id" component={PostItem} />
+          <Route path="/posts/:post_id" component={PostItem}/>
           <Footer />
         </div>
       </Switch>

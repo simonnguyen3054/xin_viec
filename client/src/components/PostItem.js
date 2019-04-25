@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { _loadPosts, _loadPostDetail, _loadPostItem } from "../services/feedService";
+import {
+  _loadPosts,
+  _loadPostDetail,
+  _loadPostItem
+} from "../services/feedService";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -86,7 +90,8 @@ class PostItem extends Component {
     super(props);
     this.state = {
       postItem: [],
-      posts: []
+      posts: [],
+      post_id: null
     };
   }
 
@@ -95,34 +100,26 @@ class PostItem extends Component {
     return _loadPostDetail(post_id).then(([postItemJSON, postsJSON]) => {
       this.setState({
         postItem: postItemJSON,
-        posts: postsJSON
+        posts: postsJSON,
+        post_id: this.props.match.params
       });
     });
   }
 
-  componentDidUpdate() {
+  //handle params on change
+  componentDidUpdate(prevProps) {
     const { post_id } = this.props.match.params;
-    return _loadPostDetail(post_id).then(([postItemJSON, postsJSON]) => {
-      this.setState({
-        postItem: postItemJSON,
-        posts: postsJSON
+    if (prevProps.match.params.post_id !== this.props.match.params.post_id) {
+      return _loadPostDetail(post_id).then(([postItemJSON, postsJSON]) => {
+        this.setState({
+          postItem: postItemJSON,
+          posts: postsJSON,
+          post_id: this.props.match.params
+        });
+
+        this.moveToTop();
       });
-
-      // this.moveToTop();
-    });
-    // if (prevState.postItem[0] == undefined) {
-    //   return false;
-    // }
-
-    // let params_id = parseInt(prevProps.match.params.post_id);
-    // let post_id = parseInt(prevState.postItem[0].id);
-
-    // if (params_id !== post_id) {
-    //   debugger
-    //   return _loadPostItem(post_id).then(resultingJSON => {
-    //     this.setState({ postItem: resultingJSON });
-    //   });
-    // }
+    }
   }
 
   handleFBShareDialog = (url, title, description, image) => {
@@ -209,7 +206,7 @@ class PostItem extends Component {
                 image={item.job_avatar}
                 title={item.job_name}
               />
-               <CardHeader
+              <CardHeader
                 title={item.username}
                 subheader={this.handleDateFormat(item.post_date)}
               />
@@ -243,7 +240,10 @@ class PostItem extends Component {
           Tin Khác
         </Typography>
         {this.state.posts.map(post => {
-          if (this.state.postItem[0] && post.post_id !== this.state.postItem[0].id) {
+          if (
+            this.state.postItem[0] &&
+            post.post_id !== this.state.postItem[0].id
+          ) {
             return (
               <Card key={post.post_id} className={classes.Card}>
                 <CardHeader
