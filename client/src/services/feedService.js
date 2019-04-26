@@ -17,7 +17,8 @@ export const _createPost = (
   post_content,
   job_location,
   experience,
-  salary
+  salary,
+  job_search
 ) => {
   return fetch("/api/post/create", {
     method: "POST",
@@ -32,7 +33,8 @@ export const _createPost = (
       post_content,
       job_location,
       experience,
-      salary
+      salary,
+      job_search
     })
   }).then(res => res.json());
 };

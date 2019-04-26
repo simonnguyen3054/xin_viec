@@ -93,20 +93,21 @@ class Feed extends Component {
       ],
       open: false,
       job_id: null,
-      job_seeking: true
+      job_seeking: 1
     };
   }
 
   componentDidMount() {
-    return _loadPosts().then(resultingJSON =>
-      this.setState({ posts: resultingJSON })
-    );
+    return _loadPosts().then(resultingJSON => {
+      this.setState({ posts: resultingJSON });
+    });
   }
 
+  //this is needed to rerender the component when user creates a new post
   componentDidUpdate() {
-    return _loadPosts().then(resultingJSON =>
-      this.setState({ posts: resultingJSON })
-    );
+    return _loadPosts().then(resultingJSON => {
+      this.setState({ posts: resultingJSON });
+    });
   }
 
   handleClickOpen = event => {
@@ -124,7 +125,13 @@ class Feed extends Component {
   };
 
   handleChange = name => event => {
-    this.setState({ [name]: event.target.checked });
+
+    if (event.target.checked) {
+      this.setState({ [name]: 1 })
+    } else {
+      this.setState({ [name]: 0 })
+    }
+
   };
 
   render() {
@@ -146,7 +153,7 @@ class Feed extends Component {
           <FormControlLabel
             control={
               <Switch
-                checked={this.state.job_seeking}
+                checked={this.state.job_seeking === 1 ? true : false}
                 onChange={this.handleChange("job_seeking")}
                 value={this.state.job_seeking ? "job_seeking" : "job_hiring"}
               />
@@ -187,62 +194,71 @@ class Feed extends Component {
 
         <Divider />
 
-        {this.state.posts.map(post => {
-          return (
-            <Card key={post.post_id} className={classes.Card}>
-              <CardHeader
-                avatar={
-                  <Avatar
-                    aria-label={post.job_name}
-                    alt={post.job_name}
-                    src={post.job_avatar}
-                  />
-                }
-                action={
-                  <IconButton>
-                    <a href={"tel: " + post.phone_number}>
-                      <Icon>call</Icon>
-                    </a>
-                  </IconButton>
-                }
-                title={post.username}
-                subheader={this.handleDateFormat(post.post_date)}
-              />
+        {/* {this.handleFeedOnPostType(
+          this.state.posts,
+          this.state.job_seeking,
+          classes
+        )} */}
 
-              <Link
-                className={classes.cardActionAreaLink}
-                to={"/posts/" + post.post_id}
-              >
-                <CardActionArea>
-                  <CardContent>
-                    <Typography component="p">{post.post_content}</Typography>
-                  </CardContent>
+        {this.state.posts
+          .filter(postFiltered => postFiltered.job_search === this.state.job_seeking)
+          .map(post => {
+            return (
+              <Card key={post.post_id} className={classes.Card}>
+                <CardHeader
+                  avatar={
+                    <Avatar
+                      aria-label={post.job_name}
+                      alt={post.job_name}
+                      src={post.job_avatar}
+                    />
+                  }
+                  action={
+                    <IconButton>
+                      <a href={"tel: " + post.phone_number}>
+                        <Icon>call</Icon>
+                      </a>
+                    </IconButton>
+                  }
+                  title={post.username}
+                  subheader={this.handleDateFormat(post.post_date)}
+                />
 
-                  <CardActions className={classes.tags}>
-                    <Chip
-                      className={classes.chips}
-                      label={"Khu Vực Gần: " + post.job_location}
-                    />
-                    <Chip
-                      className={classes.chips}
-                      label={"Kinh Nghiệm: " + post.experience}
-                    />
-                    <Chip
-                      className={classes.chips}
-                      label={"Lương Bổng: " + post.salary}
-                    />
-                  </CardActions>
-                </CardActionArea>
-              </Link>
-            </Card>
-          );
-        })}
+                <Link
+                  className={classes.cardActionAreaLink}
+                  to={"/posts/" + post.post_id}
+                >
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography component="p">{post.post_content}</Typography>
+                    </CardContent>
+
+                    <CardActions className={classes.tags}>
+                      <Chip
+                        className={classes.chips}
+                        label={"Khu Vực Gần: " + post.job_location}
+                      />
+                      <Chip
+                        className={classes.chips}
+                        label={"Kinh Nghiệm: " + post.experience}
+                      />
+                      <Chip
+                        className={classes.chips}
+                        label={"Lương Bổng: " + post.salary}
+                      />
+                    </CardActions>
+                  </CardActionArea>
+                </Link>
+              </Card>
+            );
+          })}
 
         <Post
           PostOpen={this.state.open}
           PostOpenHandling={this.handleClickOpen}
           PostCloseHandling={this.handleClose}
           jobID={this.state.job_id}
+          jobSeeking={this.state.job_seeking}
         />
       </div>
     );

@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 exports.feed_get = (req, res) => {
 
   let feed_query =
-    "SELECT posts.id AS post_id, job_id, username, phone_number, post_content, job_location, experience, salary, post_date, job_name, job_avatar FROM posts LEFT JOIN jobs ON jobs.id = posts.job_id ORDER BY post_date DESC";
+    "SELECT posts.id AS post_id, job_id, username, phone_number, post_content, job_location, experience, salary, post_date, job_name, job_avatar, job_search FROM posts LEFT JOIN jobs ON jobs.id = posts.job_id ORDER BY post_date DESC";
 
   database
     .query(feed_query)
@@ -24,7 +24,7 @@ exports.feed_get = (req, res) => {
 exports.post_create = (req, res) => {
 
   console.log(req.body);
-  const {fullName, job_id, phone_number, post_content, job_location, experience, salary} = req.body;
+  const {fullName, job_id, phone_number, post_content, job_location, experience, salary, job_search} = req.body;
 
   let create_post = "INSERT INTO posts SET ?";
   let data = {
@@ -34,7 +34,8 @@ exports.post_create = (req, res) => {
     post_content,
     job_location,
     experience,
-    salary
+    salary,
+    job_search
   }
 
   database

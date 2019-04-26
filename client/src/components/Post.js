@@ -117,7 +117,8 @@ class Post extends Component {
     event.preventDefault();
     const {postContent, salary, experience, location, fullName, phoneNumber} = this.state;
     const job_id = this.props.jobID;
-    _createPost(fullName, job_id, phoneNumber, postContent, location, experience, salary).then(resJson => {
+    const job_search = this.props.jobSeeking;
+    _createPost(fullName, job_id, phoneNumber, postContent, location, experience, salary, job_search).then(resJson => {
         console.log(resJson);
       })
 
@@ -205,9 +206,10 @@ class Post extends Component {
             value={this.state.postContent}
             onChange={this.handlePostContentChange("postContent")}
             className={classes.textField}
-            placeholder="Thông tin của người xin việc."
+            placeholder={this.props.jobSeeking ? "Thông tin của người xin việc." : "Thông tin của người thuê việc."}
             margin="normal"
             helperText="Để được tuyển dụng nhanh, bạn nên mô tả chi tiếc về bản thân mình cho công việc bạn đang tìm kiếm, như kỹ năng hay kinh nghiệm."
+            helperText={this.props.jobSeeking ? "Để được tuyển dụng nhanh, bạn nên mô tả chi tiếc về bản thân mình cho công việc bạn đang tìm kiếm, như kỹ năng hay kinh nghiệm." : "Xin vui lòng đăng chi tiết về công việc mà bạn cần nguời làm."}
           />
 
           <TextField
