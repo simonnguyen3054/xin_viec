@@ -116,20 +116,22 @@ class PostItem extends Component {
   }
 
   handleFBShareDialog = (url, title, description, image) => {
-    window.FB.ui(
-      {
-        method: "share_open_graph",
-        action_type: "og.shares",
-        action_properties: JSON.stringify({
-          object: {
-            "og:url": url,
-            "og:title": title,
-            "og:description": description,
-            "og:image": image
-          }
-        })
-      },
-      function(response) {}
+    return(
+      window.FB.ui(
+        {
+          method: "share_open_graph",
+          action_type: "og.shares",
+          action_properties: JSON.stringify({
+            object: {
+              "og:url": url,
+              "og:title": title,
+              "og:description": description,
+              "og:image": image
+            }
+          })
+        },
+        function(response) {}
+      )
     );
   };
 
