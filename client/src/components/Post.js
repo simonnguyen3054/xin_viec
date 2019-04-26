@@ -14,12 +14,8 @@ import Slide from "@material-ui/core/Slide";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Input from "@material-ui/core/Input";
-import MaskedInput from "react-text-mask";
-import MenuItem from "@material-ui/core/MenuItem";
-import Chip from "@material-ui/core/Chip";
 
 const styles = {
   PostToolBar: {
@@ -30,6 +26,11 @@ const styles = {
   dialog: {
     margin: "auto",
     maxWidth: 900
+  },
+
+  subHeader: {
+    paddingLeft: 10,
+    paddingRight: 10
   },
 
   textField: {
@@ -113,14 +114,30 @@ class Post extends Component {
     this.setState({ [fullName]: event.target.value });
   };
 
-  createPost = (event) => {
+  createPost = event => {
     event.preventDefault();
-    const {postContent, salary, experience, location, fullName, phoneNumber} = this.state;
+    const {
+      postContent,
+      salary,
+      experience,
+      location,
+      fullName,
+      phoneNumber
+    } = this.state;
     const job_id = this.props.jobID;
     const job_search = this.props.jobSeeking;
-    _createPost(fullName, job_id, phoneNumber, postContent, location, experience, salary, job_search).then(resJson => {
-        console.log(resJson);
-      })
+    _createPost(
+      fullName,
+      job_id,
+      phoneNumber,
+      postContent,
+      location,
+      experience,
+      salary,
+      job_search
+    ).then(resJson => {
+      console.log(resJson);
+    });
 
     //close dilalog
     this.props.PostCloseHandling();
@@ -131,11 +148,17 @@ class Post extends Component {
       salary: "",
       phoneNumber: "",
       fullName: ""
-    })
-  }
+    });
+  };
 
-  handlePostValidation = (postContent, location, experience, salary, fullName, phoneNumber) => {
-
+  handlePostValidation = (
+    postContent,
+    location,
+    experience,
+    salary,
+    fullName,
+    phoneNumber
+  ) => {
     const validatePost = {
       postContent,
       location,
@@ -143,21 +166,30 @@ class Post extends Component {
       salary,
       fullName,
       phoneNumber
-    }
+    };
     let isDataValid = false;
 
-    if (Object.keys(validatePost).every((k) => {
-      return validatePost[k] ? true : false
-    })) {
+    if (
+      Object.keys(validatePost).every(k => {
+        return validatePost[k] ? true : false;
+      })
+    ) {
       isDataValid = true;
     }
 
     return isDataValid;
-  }
+  };
 
   render() {
     const { classes } = this.props;
-    const { postContent, location, experience, salary, fullName, phoneNumber } = this.state;
+    const {
+      postContent,
+      location,
+      experience,
+      salary,
+      fullName,
+      phoneNumber
+    } = this.state;
 
     return (
       <div>
@@ -180,15 +212,22 @@ class Post extends Component {
               <Typography variant="h6" color="inherit">
                 Đăng Tin
               </Typography>
-              {this.handlePostValidation(postContent, location, experience, salary, fullName, phoneNumber) ?
+              {this.handlePostValidation(
+                postContent,
+                location,
+                experience,
+                salary,
+                fullName,
+                phoneNumber
+              ) ? (
                 <IconButton color="secondary" onClick={this.createPost}>
                   <SendIcon />
                 </IconButton>
-                :
+              ) : (
                 <IconButton disabled color="inherit" onClick={this.createPost}>
-                   <SendIcon />
+                  <SendIcon />
                 </IconButton>
-              }
+              )}
             </Toolbar>
           </AppBar>
 
@@ -206,12 +245,23 @@ class Post extends Component {
             value={this.state.postContent}
             onChange={this.handlePostContentChange("postContent")}
             className={classes.textField}
-            placeholder={this.props.jobSeeking ? "Thông tin của người xin việc." : "Thông tin của người thuê việc."}
+            placeholder={
+              this.props.jobSeeking
+                ? "Ví dụ: Em là thợ nail chuyên làm bột và chân tay nước đang tìm một tiệm mới..."
+                : "Ví dụ: Tiệm mới mở đang cần thợ nail biết làm bột và chân tay nước..."
+            }
             margin="normal"
-            helperText="Để được tuyển dụng nhanh, bạn nên mô tả chi tiếc về bản thân mình cho công việc bạn đang tìm kiếm, như kỹ năng hay kinh nghiệm."
-            helperText={this.props.jobSeeking ? "Để được tuyển dụng nhanh, bạn nên mô tả chi tiếc về bản thân mình cho công việc bạn đang tìm kiếm, như kỹ năng hay kinh nghiệm." : "Xin vui lòng đăng chi tiết về công việc mà bạn cần nguời làm."}
+            helperText="Lưu ý: Để được tuyển dụng nhanh, bạn nên mô tả chi tiếc về bản thân mình cho công việc bạn đang tìm kiếm, như kỹ năng hay kinh nghiệm."
+            helperText={
+              this.props.jobSeeking
+                ? "Lưu ý: Để được tuyển dụng nhanh, bạn nên mô tả chi tiếc về bản thân mình cho công việc bạn đang tìm kiếm, như kỹ năng hay kinh nghiệm."
+                : "Xin vui lòng đăng chi tiết về công việc mà bạn cần nguời làm."
+            }
           />
 
+          <Typography className={classes.subHeader} variant="subtitle1" color="inherit">
+            {this.props.jobSeeking ? "Thông Tin Người Xin Việc" : "Thông Tin Người Thuê Việc"}
+          </Typography>
           <TextField
             id="fullname"
             value={this.state.fullName}
@@ -261,7 +311,7 @@ class Post extends Component {
             </NativeSelect>
           </FormControl>
           <FormControl className={classes.selectInput}>
-            <InputLabel htmlFor="post-salary">Lương Bổng</InputLabel>
+            <InputLabel htmlFor="post-salary">Mức Lương</InputLabel>
             <NativeSelect
               value={this.state.salary}
               onChange={this.handleSalaryChange("salary")}
