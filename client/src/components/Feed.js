@@ -158,7 +158,7 @@ class Feed extends Component {
                 value={this.state.job_seeking ? "job_seeking" : "job_hiring"}
               />
             }
-            label={this.state.job_seeking ? "Xin Việc" : "Thuê Việc"}
+            label={this.state.job_seeking ? "Đăng Tin Xin Việc" : "Đăng Tin Thuê Việc"}
             labelPlacement="bottom"
           />
         </FormGroup>
