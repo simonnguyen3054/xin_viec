@@ -97,7 +97,8 @@ class Feed extends Component {
       ],
       open: false,
       job_id: null,
-      job_seeking: 1
+      job_seeking: 1,
+      job_hiring: 0
     };
   }
 
@@ -128,14 +129,24 @@ class Feed extends Component {
     return formattedDate;
   };
 
-  handleChange = name => event => {
-
+  handleJobSeekingChange = (job_seeking, job_hiring) => event => {
     if (event.target.checked) {
-      this.setState({ [name]: 1 })
+      this.setState({ [job_seeking]: 1 });
+      this.setState({ [job_hiring]: 0 });
     } else {
-      this.setState({ [name]: 0 })
+      this.setState({ [job_seeking]: 0 });
+      this.setState({ [job_hiring]: 1 });
     }
+  };
 
+  handleJobHringChange = (job_seeking, job_hiring) => event => {
+    if (event.target.checked) {
+      this.setState({ [job_seeking]: 0 });
+      this.setState({ [job_hiring]: 1 });
+    } else {
+      this.setState({ [job_seeking]: 1 });
+      this.setState({ [job_hiring]: 0 });
+    }
   };
 
   render() {
@@ -158,11 +169,23 @@ class Feed extends Component {
             control={
               <Switch
                 checked={this.state.job_seeking === 1 ? true : false}
-                onChange={this.handleChange("job_seeking")}
-                value={this.state.job_seeking ? "job_seeking" : "job_hiring"}
+                onChange={this.handleJobSeekingChange("job_seeking", "job_hiring")}
+                value="job_seeking"
               />
             }
-            label={this.state.job_seeking ? "Đăng Tin Xin Việc" : "Đăng Tin Thuê Việc"}
+            label="Xin Việc"
+            labelPlacement="bottom"
+          />
+
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.job_hiring === 1 ? true : false}
+                onChange={this.handleJobHringChange("job_seeking", "job_hiring")}
+                value="job_hiring"
+              />
+            }
+            label="Thuê Việc"
             labelPlacement="bottom"
           />
         </FormGroup>
@@ -199,7 +222,9 @@ class Feed extends Component {
         <Divider />
 
         {this.state.posts
-          .filter(postFiltered => postFiltered.job_search === this.state.job_seeking)
+          .filter(
+            postFiltered => postFiltered.job_search === this.state.job_seeking
+          )
           .map(post => {
             return (
               <Card key={post.post_id} className={classes.Card}>

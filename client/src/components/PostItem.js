@@ -117,32 +117,22 @@ class PostItem extends Component {
   }
 
   handleFBShareDialog = (url, title, description, image) => {
-    window.FB.ui({
-      method: 'share_open_graph',
-      action_type: 'og.likes',
-      action_properties: JSON.stringify({
-        object:'https://developers.facebook.com/docs/javascript/examples',
-      })
-    }, function(response){
-      // Debug response (optional)
-      console.log(response);
-    });
-    
-    // window.FB.ui(
-    //   {
-    //     method: "share_open_graph",
-    //     action_type: "og.shares",
-    //     action_properties: JSON.stringify({
-    //       object: {
-    //         "og:url": url,
-    //         "og:title": title,
-    //         "og:description": description,
-    //         "og:image": image
-    //       }
-    //     })
-    //   },
-    //   function(response) {}
-    // );
+    debugger
+    window.FB.ui(
+      {
+        method: "share_open_graph",
+        action_type: "og.shares",
+        action_properties: JSON.stringify({
+          object: {
+            "og:url": url,
+            "og:title": title,
+            "og:description": description,
+            "og:image": image
+          }
+        })
+      },
+      function(response) {}
+    );
   };
 
   handleDateFormat = date => {
