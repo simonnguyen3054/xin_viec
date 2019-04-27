@@ -21,7 +21,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import Divider from "@material-ui/core/Divider";
+import { Helmet } from "react-helmet";
 
 const styles = {
   root: {
@@ -117,7 +117,6 @@ class PostItem extends Component {
   }
 
   handleFBShareDialog = (url, title, description, image) => {
-    debugger
     window.FB.ui(
       {
         method: "share_open_graph",
@@ -163,6 +162,25 @@ class PostItem extends Component {
         {this.state.postItem.map(item => {
           return (
             <Card key={item.id}>
+              <Helmet>
+                <meta
+                  property="og:url"
+                  content={"http://www.viecconnect.com/" + item.id}
+                />
+                <meta property="og:type" content="article" />
+                <meta
+                  property="og:title"
+                  content={item.username}
+                />
+                <meta
+                  property="og:description"
+                  content={item.post_content}
+                />
+                <meta
+                  property="og:image"
+                  content={post.job_avatar}
+                />
+              </Helmet>
               <CardActions className={classes.postHeader}>
                 <Link to="/">
                   <IconButton className={classes.backIcon} color="default">
