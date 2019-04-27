@@ -162,7 +162,7 @@ class PostItem extends Component {
         {this.state.postItem.map(item => {
           return (
             <Card key={item.id}>
-              <Helmet>
+              {/* <Helmet>
                 <meta
                   property="og:url"
                   content={"http://www.viecconnect.com/" + item.id}
@@ -180,7 +180,7 @@ class PostItem extends Component {
                   property="og:image"
                   content={post.job_avatar}
                 />
-              </Helmet>
+              </Helmet> */}
               <CardActions className={classes.postHeader}>
                 <Link to="/">
                   <IconButton className={classes.backIcon} color="default">
@@ -192,7 +192,7 @@ class PostItem extends Component {
                   <IconButton
                     onClick={() => {
                       this.handleFBShareDialog(
-                        `http://www.viecconnect.com//posts/${item.id}`,
+                        `http://www.viecconnect.com/posts/${item.id}`,
                         item.username,
                         item.post_content,
                         item.job_avatar
