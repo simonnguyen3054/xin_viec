@@ -72,11 +72,12 @@ const styles = {
   },
 
   headerTypoGraphy: {
-    textAlign: "center"
+    textAlign: "center",
+    marginTop: 25
   },
 
   Card: {
-    marginTop: 10,
+    marginTop: 15,
     borderRadius: 0
   },
 
@@ -226,7 +227,7 @@ class PostItem extends Component {
           );
         })}
 
-        <Divider className={classes.header} variant="middle" />
+
         <Typography
           variant="h6"
           className={classes.headerTypoGraphy}

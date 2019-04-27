@@ -44,23 +44,27 @@ const styles = {
     marginTop: 10,
     marginBottom: 10
   },
+
   paper_icon: {
     margin: "auto",
     marginBottom: 10,
     width: 50,
     height: 50
   },
+
   tags: {
     marginBottom: 10,
     display: "flex",
     flexWrap: "wrap"
   },
+
   chips: {
     marginRight: 10,
     marginBottom: 10
   },
+
   Card: {
-    marginTop: 10,
+    marginTop: 15,
     borderRadius: 0
   },
 
@@ -193,12 +197,6 @@ class Feed extends Component {
         </Grid>
 
         <Divider />
-
-        {/* {this.handleFeedOnPostType(
-          this.state.posts,
-          this.state.job_seeking,
-          classes
-        )} */}
 
         {this.state.posts
           .filter(postFiltered => postFiltered.job_search === this.state.job_seeking)
