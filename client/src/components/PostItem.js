@@ -123,7 +123,7 @@ class PostItem extends Component {
         method: "share_open_graph",
         action_type: "og.shares",
         action_properties: JSON.stringify({
-          post: {
+          object: {
             "og:url": url,
             "og:title": title,
             "og:description": description,
