@@ -121,21 +121,33 @@ class PostItem extends Component {
   }
 
   handleFBShareDialog = (url, title, description, image) => {
-    window.FB.ui(
-      {
-        method: "share_open_graph",
-        action_type: "og.shares",
-        action_properties: JSON.stringify({
-          object: {
-            "og:url": url,
-            "og:title": title,
-            "og:description": description,
-            "og:image": image
-          }
-        })
-      },
-      function(response) {}
-    );
+
+    window.FB.ui({
+      method: 'share_open_graph',
+      action_type: 'og.likes',
+      action_properties: JSON.stringify({
+        object: url
+      })
+    }, function(response){
+      // Debug response (optional)
+      console.log(response);
+    });
+
+    // FB.ui(
+    //   {
+    //     method: "share_open_graph",
+    //     action_type: "og.shares",
+    //     action_properties: JSON.stringify({
+    //       object: {
+    //         "og:url": url,
+    //         "og:title": title,
+    //         "og:description": description,
+    //         "og:image": image
+    //       }
+    //     })
+    //   },
+    //   function(response) {}
+    // );
   };
 
   handleDateFormat = date => {
@@ -166,7 +178,7 @@ class PostItem extends Component {
         {this.state.postItem.map(item => {
           return (
             <Card key={item.id}>
-              <Helmet>
+              {/* <Helmet>
                 <meta
                   property="og:url"
                   content={"http://www.viecconnect.com/" + item.id}
@@ -184,7 +196,7 @@ class PostItem extends Component {
                   property="og:image"
                   content={item.job_avatar}
                 />
-              </Helmet>
+              </Helmet> */}
               <CardActions className={classes.postHeader}>
                 <Link to="/">
                   <IconButton className={classes.backIcon} color="default">
