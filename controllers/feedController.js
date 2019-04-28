@@ -2,6 +2,8 @@ const database = require("../model/dbconnection");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
+const path = require('path');
+const fs = require('fs')
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -57,7 +59,24 @@ exports.post_get = (req, res) => {
   database
     .query(post_query, [req.params.id])
     .then(results => {
-      res.json(results);
+
+      const filePath = path.resolve(__dirname, "../client", 'build', 'index.html')
+
+      // read in the index.html file
+      fs.readFile(filePath, 'utf8', function (err,data) {
+        if (err) {
+          return console.log(err);
+        }
+
+        // replace the special strings with server generated strings
+        data = data.replace(/\$OG_TITLE/g, results[0].username);
+        data = data.replace(/\$OG_URL/g, `${process.env.FRONTEND_URL}/posts/${req.params.id}`);
+        data = data.replace(/\$OG_DESCRIPTION/g, results[0].post_content);
+        data = data.replace(/\$OG_IMAGE/g, results[0].job_avatar);
+
+        res.json(results);
+      });
+      
     })
     .catch(err => {
       res.json(err);

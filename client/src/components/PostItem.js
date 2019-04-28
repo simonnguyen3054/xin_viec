@@ -148,7 +148,7 @@ class PostItem extends Component {
         {this.state.postItem.map(item => {
           return (
             <Card key={item.id}>
-              <Helmet>
+              {/* <Helmet>
                 <meta
                   property="og:url"
                   content={"http://www.viecconnect.com/" + item.id}
@@ -157,7 +157,7 @@ class PostItem extends Component {
                 <meta property="og:title" content={item.username} />
                 <meta property="og:description" content={item.post_content} />
                 <meta property="og:image" content={item.job_avatar} />
-              </Helmet>
+              </Helmet> */}
               <CardActions className={classes.postHeader}>
                 <Link to="/">
                   <IconButton className={classes.backIcon} color="default">
@@ -168,7 +168,7 @@ class PostItem extends Component {
                 <div className={classes.headerIcons}>
                   <div
                     className="fb-share-button"
-                    data-href={`http://www.viecconnect.com//posts/${item.id}`}
+                    // data-href={`http://www.viecconnect.com//posts/${item.id}`}
                     data-layout="button"
                     data-size="small"
                   >
