@@ -108,6 +108,10 @@ class PostItem extends Component {
   //handle params on change
   componentDidUpdate(prevProps) {
     const { post_id } = this.props.match.params;
+
+    //parse fb button
+    window.FB.XFBML.parse();
+
     if (prevProps.match.params.post_id !== this.props.match.params.post_id) {
       return _loadPostItem(post_id).then(resultingJSON => {
         this.setState({ postItem: resultingJSON });
@@ -162,7 +166,7 @@ class PostItem extends Component {
         {this.state.postItem.map(item => {
           return (
             <Card key={item.id}>
-              {/* <Helmet>
+              <Helmet>
                 <meta
                   property="og:url"
                   content={"http://www.viecconnect.com/" + item.id}
@@ -178,9 +182,9 @@ class PostItem extends Component {
                 />
                 <meta
                   property="og:image"
-                  content={post.job_avatar}
+                  content={item.job_avatar}
                 />
-              </Helmet> */}
+              </Helmet>
               <CardActions className={classes.postHeader}>
                 <Link to="/">
                   <IconButton className={classes.backIcon} color="default">
@@ -189,7 +193,7 @@ class PostItem extends Component {
                 </Link>
 
                 <div className={classes.headerIcons}>
-                  <IconButton
+                  {/* <IconButton
                     onClick={() => {
                       this.handleFBShareDialog(
                         `http://www.viecconnect.com/posts/${item.id}`,
@@ -204,9 +208,9 @@ class PostItem extends Component {
                       style={{ width: "24px", height: "29px" }}
                       className="fab fa-facebook-square"
                     />
-                  </IconButton>
+                  </IconButton> */}
 
-                  {/* <div class="fb-share-button" data-href={`http://www.viecconnect.com//posts/${item.id}`} data-layout="button" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div> */}
+                  <div className="fb-share-button" data-href={`http://www.viecconnect.com//posts/${item.id}`} data-layout="button" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" className="fb-xfbml-parse-ignore">Share</a></div>
 
                   <IconButton className={classes.callIcon}>
                     <a href={"tel: " + item.phone_number}>
