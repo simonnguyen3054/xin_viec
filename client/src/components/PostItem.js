@@ -117,21 +117,33 @@ class PostItem extends Component {
   }
 
   handleFBShareDialog = (url, title, description, image) => {
-    window.FB.ui(
-      {
-        method: "share_open_graph",
-        action_type: "og.shares",
-        action_properties: JSON.stringify({
-          object: {
-            "og:url": url,
-            "og:title": title,
-            "og:description": description,
-            "og:image": image
-          }
-        })
-      },
-      function(response) {}
-    );
+
+    window.FB.ui({
+      method: 'share_open_graph',
+      action_type: 'og.likes',
+      action_properties: JSON.stringify({
+        object: url
+      })
+    }, function(response){
+      // Debug response (optional)
+      console.log(response);
+    });
+
+    // FB.ui(
+    //   {
+    //     method: "share_open_graph",
+    //     action_type: "og.shares",
+    //     action_properties: JSON.stringify({
+    //       object: {
+    //         "og:url": url,
+    //         "og:title": title,
+    //         "og:description": description,
+    //         "og:image": image
+    //       }
+    //     })
+    //   },
+    //   function(response) {}
+    // );
   };
 
   handleDateFormat = date => {
@@ -191,12 +203,13 @@ class PostItem extends Component {
                 <div className={classes.headerIcons}>
                   <IconButton
                     onClick={() => {
-                      this.handleFBShareDialog(
-                        `http://www.viecconnect.com/posts/${item.id}`,
-                        item.username,
-                        item.post_content,
-                        item.job_avatar
-                      );
+                      // this.handleFBShareDialog(
+                      //   `http://www.viecconnect.com/posts/${item.id}`,
+                      //   item.username,
+                      //   item.post_content,
+                      //   item.job_avatar
+                      // );
+                      this.handleFBShareDialog(`http://www.viecconnect.com/posts/${item.id}`);
                     }}
                     className={classes.callIcon}
                   >
