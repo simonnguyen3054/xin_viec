@@ -121,33 +121,22 @@ class PostItem extends Component {
   }
 
   handleFBShareDialog = (url, title, description, image) => {
-
-    window.FB.ui({
-      method: 'share_open_graph',
-      action_type: 'og.likes',
-      action_properties: JSON.stringify({
-        object: url
-      })
-    }, function(response){
-      // Debug response (optional)
-      console.log(response);
-    });
-
-    // FB.ui(
-    //   {
-    //     method: "share_open_graph",
-    //     action_type: "og.shares",
-    //     action_properties: JSON.stringify({
-    //       object: {
-    //         "og:url": url,
-    //         "og:title": title,
-    //         "og:description": description,
-    //         "og:image": image
-    //       }
-    //     })
-    //   },
-    //   function(response) {}
-    // );
+    debugger
+    window.FB.ui(
+      {
+        method: "share_open_graph",
+        action_type: "og.shares",
+        action_properties: JSON.stringify({
+          object: {
+            "og:url": url,
+            "og:title": title,
+            "og:description": description,
+            "og:image": image
+          }
+        })
+      },
+      function(response) {}
+    );
   };
 
   handleDateFormat = date => {
@@ -178,7 +167,7 @@ class PostItem extends Component {
         {this.state.postItem.map(item => {
           return (
             <Card key={item.id}>
-              <Helmet>
+              {/* <Helmet>
                 <meta
                   property="og:url"
                   content={"http://www.viecconnect.com/" + item.id}
@@ -196,7 +185,7 @@ class PostItem extends Component {
                   property="og:image"
                   content={item.job_avatar}
                 />
-              </Helmet>
+              </Helmet> */}
               <CardActions className={classes.postHeader}>
                 <Link to="/">
                   <IconButton className={classes.backIcon} color="default">
@@ -205,7 +194,7 @@ class PostItem extends Component {
                 </Link>
 
                 <div className={classes.headerIcons}>
-                  {/* <IconButton
+                  <IconButton
                     onClick={() => {
                       this.handleFBShareDialog(
                         `http://www.viecconnect.com/posts/${item.id}`,
@@ -220,9 +209,9 @@ class PostItem extends Component {
                       style={{ width: "24px", height: "29px" }}
                       className="fab fa-facebook-square"
                     />
-                  </IconButton> */}
+                  </IconButton>
 
-                  <div className="fb-share-button" data-href={`http://www.viecconnect.com//posts/${item.id}`} data-layout="button" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" className="fb-xfbml-parse-ignore">Share</a></div>
+                  {/* <div className="fb-share-button" data-href={`http://www.viecconnect.com//posts/${item.id}`} data-layout="button" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" className="fb-xfbml-parse-ignore">Share</a></div> */}
 
                   <IconButton className={classes.callIcon}>
                     <a href={"tel: " + item.phone_number}>
