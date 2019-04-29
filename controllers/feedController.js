@@ -60,23 +60,25 @@ exports.post_get = (req, res) => {
     .query(post_query, [req.params.id])
     .then(results => {
 
-      const filePath = path.resolve(__dirname, "../client", 'build', 'index.html')
-      console.log("file path", filePath);
+      res.json(results);
+
+      // const filePath = path.resolve(__dirname, "../client", 'public', 'index.html')
+      // console.log("file path", filePath);
 
       // read in the index.html file
-      fs.readFile(filePath, 'utf8', function (err,data) {
-        if (err) {
-          return console.log(err);
-        }
+      // fs.readFile(filePath, 'utf8', function (err,data) {
+      //   if (err) {
+      //     return console.log(err);
+      //   }
 
-        // replace the special strings with server generated strings
-        data = data.replace(/\$OG_TITLE/g, results[0].username);
-        data = data.replace(/\$OG_URL/g, `${process.env.FRONTEND_URL}/posts/${req.params.id}`);
-        data = data.replace(/\$OG_DESCRIPTION/g, results[0].post_content);
-        data = data.replace(/\$OG_IMAGE/g, results[0].job_avatar);
-        console.log("replaced data", data);
-        res.json(results);
-      });
+      //   // replace the special strings with server generated strings
+      //   data = data.replace(/\$OG_TITLE/g, results[0].username);
+      //   data = data.replace(/\$OG_URL/g, `${process.env.FRONTEND_URL}/posts/${req.params.id}`);
+      //   data = data.replace(/\$OG_DESCRIPTION/g, results[0].post_content);
+      //   data = data.replace(/\$OG_IMAGE/g, results[0].job_avatar);
+      //   console.log("replaced data", data);
+      //   res.json(results);
+      // });
 
     })
     .catch(err => {

@@ -168,7 +168,7 @@ class PostItem extends Component {
                 <div className={classes.headerIcons}>
                   <div
                     className="fb-share-button"
-                    // data-href={`http://www.viecconnect.com//posts/${item.id}`}
+                    data-href={`http://www.viecconnect.com//posts/${item.id}`}
                     data-layout="button"
                     data-size="small"
                   >
